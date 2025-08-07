@@ -25,10 +25,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/maa3x/zapx"
 	"github.com/maa3x/zapx/zapcore"
 	"github.com/maa3x/zapx/zaptest"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestCheckedEntryIllegalReuse(t *testing.T) {
@@ -45,11 +45,11 @@ func TestCheckedEntryIllegalReuse(t *testing.T) {
 	ce.ErrorOutput = zapcore.AddSync(&errOut)
 
 	// The first write should succeed.
-	ce.Write(zap.String("k", "v"), zap.Int("n", 42))
+	ce.Write(zapx.String("k", "v"), zapx.Int("n", 42))
 	assert.Empty(t, errOut.String(), "Expected no errors on first write.")
 
 	// The second write should fail.
-	ce.Write(zap.String("foo", "bar"), zap.Int("x", 1))
+	ce.Write(zapx.String("foo", "bar"), zapx.Int("x", 1))
 	assert.Contains(t, errOut.String(), "Unsafe CheckedEntry re-use near Entry",
 		"Expected error logged on second write.")
 }

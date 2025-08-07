@@ -76,30 +76,30 @@ func (gs groupObject) MarshalLogObject(enc zapcore.ObjectEncoder) error {
 func convertAttrToField(attr slog.Attr) zapcore.Field {
 	if attr.Equal(slog.Attr{}) {
 		// Ignore empty attrs.
-		return zap.Skip()
+		return zapx.Skip()
 	}
 
 	switch attr.Value.Kind() {
 	case slog.KindBool:
-		return zap.Bool(attr.Key, attr.Value.Bool())
+		return zapx.Bool(attr.Key, attr.Value.Bool())
 	case slog.KindDuration:
-		return zap.Duration(attr.Key, attr.Value.Duration())
+		return zapx.Duration(attr.Key, attr.Value.Duration())
 	case slog.KindFloat64:
-		return zap.Float64(attr.Key, attr.Value.Float64())
+		return zapx.Float64(attr.Key, attr.Value.Float64())
 	case slog.KindInt64:
-		return zap.Int64(attr.Key, attr.Value.Int64())
+		return zapx.Int64(attr.Key, attr.Value.Int64())
 	case slog.KindString:
-		return zap.String(attr.Key, attr.Value.String())
+		return zapx.String(attr.Key, attr.Value.String())
 	case slog.KindTime:
-		return zap.Time(attr.Key, attr.Value.Time())
+		return zapx.Time(attr.Key, attr.Value.Time())
 	case slog.KindUint64:
-		return zap.Uint64(attr.Key, attr.Value.Uint64())
+		return zapx.Uint64(attr.Key, attr.Value.Uint64())
 	case slog.KindGroup:
 		if attr.Key == "" {
 			// Inlines recursively.
-			return zap.Inline(groupObject(attr.Value.Group()))
+			return zapx.Inline(groupObject(attr.Value.Group()))
 		}
-		return zap.Object(attr.Key, groupObject(attr.Value.Group()))
+		return zapx.Object(attr.Key, groupObject(attr.Value.Group()))
 	case slog.KindLogValuer:
 		return convertAttrToField(slog.Attr{
 			Key: attr.Key,
@@ -109,7 +109,7 @@ func convertAttrToField(attr slog.Attr) zapcore.Field {
 			Value: attr.Value.Resolve(),
 		})
 	default:
-		return zap.Any(attr.Key, attr.Value.Any())
+		return zapx.Any(attr.Key, attr.Value.Any())
 	}
 }
 
@@ -173,7 +173,7 @@ func (h *Handler) Handle(ctx context.Context, record slog.Record) error {
 	var addedNamespace bool
 	record.Attrs(func(attr slog.Attr) bool {
 		f := convertAttrToField(attr)
-		if !addedNamespace && len(h.groups) > 0 && f != zap.Skip() {
+		if !addedNamespace && len(h.groups) > 0 && f != zapx.Skip() {
 			// Namespaces are added only if at least one field is present
 			// to avoid creating empty groups.
 			fields = h.appendGroups(fields)
@@ -189,7 +189,7 @@ func (h *Handler) Handle(ctx context.Context, record slog.Record) error {
 
 func (h *Handler) appendGroups(fields []zapcore.Field) []zapcore.Field {
 	for _, g := range h.groups {
-		fields = append(fields, zap.Namespace(g))
+		fields = append(fields, zapx.Namespace(g))
 	}
 	return fields
 }
@@ -201,7 +201,7 @@ func (h *Handler) WithAttrs(attrs []slog.Attr) slog.Handler {
 	var addedNamespace bool
 	for _, attr := range attrs {
 		f := convertAttrToField(attr)
-		if !addedNamespace && len(h.groups) > 0 && f != zap.Skip() {
+		if !addedNamespace && len(h.groups) > 0 && f != zapx.Skip() {
 			// Namespaces are added only if at least one field is present
 			// to avoid creating empty groups.
 			fields = h.appendGroups(fields)

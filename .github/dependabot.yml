@@ -9,7 +9,7 @@ updates:
   # regularly--not until we need a newer version of a dependency for a feature
   # or specific fix.
   # This way, users of Zap aren't forced to upgrade all their transitive
-  # dependencies every time they upgrade Zap.
+  # dependencies every time they upgrade zapx.
   #
   # However, we do want to regularly update dependencies used inside the tools
   # submodule because that holds linters and other development tools.

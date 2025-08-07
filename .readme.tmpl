@@ -23,7 +23,7 @@ In contexts where performance is nice, but not critical, use the
 packages and includes both structured and `printf`-style APIs.
 
 ```go
-logger, _ := zap.NewProduction()
+logger, _ := zapx.NewProduction()
 defer logger.Sync() // flushes buffer, if any
 sugar := logger.Sugar()
 sugar.Infow("failed to fetch URL",
@@ -40,13 +40,13 @@ faster than the `SugaredLogger` and allocates far less, but it only supports
 structured logging.
 
 ```go
-logger, _ := zap.NewProduction()
+logger, _ := zapx.NewProduction()
 defer logger.Sync()
 logger.Info("failed to fetch URL",
   // Structured context as strongly typed Field values.
-  zap.String("url", url),
-  zap.Int("attempt", 3),
-  zap.Duration("backoff", time.Second),
+  zapx.String("url", url),
+  zapx.Int("attempt", 3),
+  zapx.Duration("backoff", time.Second),
 )
 ```
 

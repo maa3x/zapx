@@ -23,8 +23,8 @@ package exit_test
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/maa3x/zapx/internal/exit"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestStub(t *testing.T) {

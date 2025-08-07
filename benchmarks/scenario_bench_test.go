@@ -33,7 +33,7 @@ import (
 func BenchmarkDisabledWithoutFields(b *testing.B) {
 	b.Logf("Logging at a disabled level without any structured context.")
 	b.Run("Zap", func(b *testing.B) {
-		logger := newZapLogger(zap.ErrorLevel)
+		logger := newZapLogger(zapx.ErrorLevel)
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
@@ -41,19 +41,19 @@ func BenchmarkDisabledWithoutFields(b *testing.B) {
 			}
 		})
 	})
-	b.Run("Zap.Check", func(b *testing.B) {
-		logger := newZapLogger(zap.ErrorLevel)
+	b.Run("zapx.Check", func(b *testing.B) {
+		logger := newZapLogger(zapx.ErrorLevel)
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
-				if m := logger.Check(zap.InfoLevel, getMessage(0)); m != nil {
+				if m := logger.Check(zapx.InfoLevel, getMessage(0)); m != nil {
 					m.Write()
 				}
 			}
 		})
 	})
-	b.Run("Zap.Sugar", func(b *testing.B) {
-		logger := newZapLogger(zap.ErrorLevel).Sugar()
+	b.Run("zapx.Sugar", func(b *testing.B) {
+		logger := newZapLogger(zapx.ErrorLevel).Sugar()
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
@@ -61,8 +61,8 @@ func BenchmarkDisabledWithoutFields(b *testing.B) {
 			}
 		})
 	})
-	b.Run("Zap.SugarFormatting", func(b *testing.B) {
-		logger := newZapLogger(zap.ErrorLevel).Sugar()
+	b.Run("zapx.SugarFormatting", func(b *testing.B) {
+		logger := newZapLogger(zapx.ErrorLevel).Sugar()
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
@@ -120,7 +120,7 @@ func BenchmarkDisabledWithoutFields(b *testing.B) {
 func BenchmarkDisabledAccumulatedContext(b *testing.B) {
 	b.Logf("Logging at a disabled level with some accumulated context.")
 	b.Run("Zap", func(b *testing.B) {
-		logger := newZapLogger(zap.ErrorLevel).With(fakeFields()...)
+		logger := newZapLogger(zapx.ErrorLevel).With(fakeFields()...)
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
@@ -128,19 +128,19 @@ func BenchmarkDisabledAccumulatedContext(b *testing.B) {
 			}
 		})
 	})
-	b.Run("Zap.Check", func(b *testing.B) {
-		logger := newZapLogger(zap.ErrorLevel).With(fakeFields()...)
+	b.Run("zapx.Check", func(b *testing.B) {
+		logger := newZapLogger(zapx.ErrorLevel).With(fakeFields()...)
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
-				if m := logger.Check(zap.InfoLevel, getMessage(0)); m != nil {
+				if m := logger.Check(zapx.InfoLevel, getMessage(0)); m != nil {
 					m.Write()
 				}
 			}
 		})
 	})
-	b.Run("Zap.Sugar", func(b *testing.B) {
-		logger := newZapLogger(zap.ErrorLevel).With(fakeFields()...).Sugar()
+	b.Run("zapx.Sugar", func(b *testing.B) {
+		logger := newZapLogger(zapx.ErrorLevel).With(fakeFields()...).Sugar()
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
@@ -148,8 +148,8 @@ func BenchmarkDisabledAccumulatedContext(b *testing.B) {
 			}
 		})
 	})
-	b.Run("Zap.SugarFormatting", func(b *testing.B) {
-		logger := newZapLogger(zap.ErrorLevel).With(fakeFields()...).Sugar()
+	b.Run("zapx.SugarFormatting", func(b *testing.B) {
+		logger := newZapLogger(zapx.ErrorLevel).With(fakeFields()...).Sugar()
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
@@ -207,7 +207,7 @@ func BenchmarkDisabledAccumulatedContext(b *testing.B) {
 func BenchmarkDisabledAddingFields(b *testing.B) {
 	b.Logf("Logging at a disabled level, adding context at each log site.")
 	b.Run("Zap", func(b *testing.B) {
-		logger := newZapLogger(zap.ErrorLevel)
+		logger := newZapLogger(zapx.ErrorLevel)
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
@@ -215,19 +215,19 @@ func BenchmarkDisabledAddingFields(b *testing.B) {
 			}
 		})
 	})
-	b.Run("Zap.Check", func(b *testing.B) {
-		logger := newZapLogger(zap.ErrorLevel)
+	b.Run("zapx.Check", func(b *testing.B) {
+		logger := newZapLogger(zapx.ErrorLevel)
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
-				if m := logger.Check(zap.InfoLevel, getMessage(0)); m != nil {
+				if m := logger.Check(zapx.InfoLevel, getMessage(0)); m != nil {
 					m.Write(fakeFields()...)
 				}
 			}
 		})
 	})
-	b.Run("Zap.Sugar", func(b *testing.B) {
-		logger := newZapLogger(zap.ErrorLevel).Sugar()
+	b.Run("zapx.Sugar", func(b *testing.B) {
+		logger := newZapLogger(zapx.ErrorLevel).Sugar()
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
@@ -285,7 +285,7 @@ func BenchmarkDisabledAddingFields(b *testing.B) {
 func BenchmarkWithoutFields(b *testing.B) {
 	b.Logf("Logging without any structured context.")
 	b.Run("Zap", func(b *testing.B) {
-		logger := newZapLogger(zap.DebugLevel)
+		logger := newZapLogger(zapx.DebugLevel)
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
@@ -293,32 +293,32 @@ func BenchmarkWithoutFields(b *testing.B) {
 			}
 		})
 	})
-	b.Run("Zap.Check", func(b *testing.B) {
-		logger := newZapLogger(zap.DebugLevel)
+	b.Run("zapx.Check", func(b *testing.B) {
+		logger := newZapLogger(zapx.DebugLevel)
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
-				if ce := logger.Check(zap.InfoLevel, getMessage(0)); ce != nil {
+				if ce := logger.Check(zapx.InfoLevel, getMessage(0)); ce != nil {
 					ce.Write()
 				}
 			}
 		})
 	})
-	b.Run("Zap.CheckSampled", func(b *testing.B) {
-		logger := newSampledLogger(zap.DebugLevel)
+	b.Run("zapx.CheckSampled", func(b *testing.B) {
+		logger := newSampledLogger(zapx.DebugLevel)
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			i := 0
 			for pb.Next() {
 				i++
-				if ce := logger.Check(zap.InfoLevel, getMessage(i)); ce != nil {
+				if ce := logger.Check(zapx.InfoLevel, getMessage(i)); ce != nil {
 					ce.Write()
 				}
 			}
 		})
 	})
-	b.Run("Zap.Sugar", func(b *testing.B) {
-		logger := newZapLogger(zap.DebugLevel).Sugar()
+	b.Run("zapx.Sugar", func(b *testing.B) {
+		logger := newZapLogger(zapx.DebugLevel).Sugar()
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
@@ -326,8 +326,8 @@ func BenchmarkWithoutFields(b *testing.B) {
 			}
 		})
 	})
-	b.Run("Zap.SugarFormatting", func(b *testing.B) {
-		logger := newZapLogger(zap.DebugLevel).Sugar()
+	b.Run("zapx.SugarFormatting", func(b *testing.B) {
+		logger := newZapLogger(zapx.DebugLevel).Sugar()
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
@@ -443,7 +443,7 @@ func BenchmarkWithoutFields(b *testing.B) {
 func BenchmarkAccumulatedContext(b *testing.B) {
 	b.Logf("Logging with some accumulated context.")
 	b.Run("Zap", func(b *testing.B) {
-		logger := newZapLogger(zap.DebugLevel).With(fakeFields()...)
+		logger := newZapLogger(zapx.DebugLevel).With(fakeFields()...)
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
@@ -451,32 +451,32 @@ func BenchmarkAccumulatedContext(b *testing.B) {
 			}
 		})
 	})
-	b.Run("Zap.Check", func(b *testing.B) {
-		logger := newZapLogger(zap.DebugLevel).With(fakeFields()...)
+	b.Run("zapx.Check", func(b *testing.B) {
+		logger := newZapLogger(zapx.DebugLevel).With(fakeFields()...)
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
-				if ce := logger.Check(zap.InfoLevel, getMessage(0)); ce != nil {
+				if ce := logger.Check(zapx.InfoLevel, getMessage(0)); ce != nil {
 					ce.Write()
 				}
 			}
 		})
 	})
-	b.Run("Zap.CheckSampled", func(b *testing.B) {
-		logger := newSampledLogger(zap.DebugLevel).With(fakeFields()...)
+	b.Run("zapx.CheckSampled", func(b *testing.B) {
+		logger := newSampledLogger(zapx.DebugLevel).With(fakeFields()...)
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			i := 0
 			for pb.Next() {
 				i++
-				if ce := logger.Check(zap.InfoLevel, getMessage(i)); ce != nil {
+				if ce := logger.Check(zapx.InfoLevel, getMessage(i)); ce != nil {
 					ce.Write()
 				}
 			}
 		})
 	})
-	b.Run("Zap.Sugar", func(b *testing.B) {
-		logger := newZapLogger(zap.DebugLevel).With(fakeFields()...).Sugar()
+	b.Run("zapx.Sugar", func(b *testing.B) {
+		logger := newZapLogger(zapx.DebugLevel).With(fakeFields()...).Sugar()
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
@@ -484,8 +484,8 @@ func BenchmarkAccumulatedContext(b *testing.B) {
 			}
 		})
 	})
-	b.Run("Zap.SugarFormatting", func(b *testing.B) {
-		logger := newZapLogger(zap.DebugLevel).With(fakeFields()...).Sugar()
+	b.Run("zapx.SugarFormatting", func(b *testing.B) {
+		logger := newZapLogger(zapx.DebugLevel).With(fakeFields()...).Sugar()
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
@@ -583,7 +583,7 @@ func BenchmarkAccumulatedContext(b *testing.B) {
 func BenchmarkAddingFields(b *testing.B) {
 	b.Logf("Logging with additional context at each log site.")
 	b.Run("Zap", func(b *testing.B) {
-		logger := newZapLogger(zap.DebugLevel)
+		logger := newZapLogger(zapx.DebugLevel)
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
@@ -591,32 +591,32 @@ func BenchmarkAddingFields(b *testing.B) {
 			}
 		})
 	})
-	b.Run("Zap.Check", func(b *testing.B) {
-		logger := newZapLogger(zap.DebugLevel)
+	b.Run("zapx.Check", func(b *testing.B) {
+		logger := newZapLogger(zapx.DebugLevel)
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {
-				if ce := logger.Check(zap.InfoLevel, getMessage(0)); ce != nil {
+				if ce := logger.Check(zapx.InfoLevel, getMessage(0)); ce != nil {
 					ce.Write(fakeFields()...)
 				}
 			}
 		})
 	})
-	b.Run("Zap.CheckSampled", func(b *testing.B) {
-		logger := newSampledLogger(zap.DebugLevel)
+	b.Run("zapx.CheckSampled", func(b *testing.B) {
+		logger := newSampledLogger(zapx.DebugLevel)
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			i := 0
 			for pb.Next() {
 				i++
-				if ce := logger.Check(zap.InfoLevel, getMessage(i)); ce != nil {
+				if ce := logger.Check(zapx.InfoLevel, getMessage(i)); ce != nil {
 					ce.Write(fakeFields()...)
 				}
 			}
 		})
 	})
-	b.Run("Zap.Sugar", func(b *testing.B) {
-		logger := newZapLogger(zap.DebugLevel).Sugar()
+	b.Run("zapx.Sugar", func(b *testing.B) {
+		logger := newZapLogger(zapx.DebugLevel).Sugar()
 		b.ResetTimer()
 		b.RunParallel(func(pb *testing.PB) {
 			for pb.Next() {

@@ -119,7 +119,7 @@ type Config struct {
 // object.
 // For example, use the following to change the time encoding format:
 //
-//	cfg := zap.NewProductionEncoderConfig()
+//	cfg := zapx.NewProductionEncoderConfig()
 //	cfg.EncodeTime = zapcore.ISO8601TimeEncoder
 func NewProductionEncoderConfig() zapcore.EncoderConfig {
 	return zapcore.EncoderConfig{
@@ -195,7 +195,7 @@ func NewProductionConfig() Config {
 // object.
 // For example, use the following to change the time encoding format:
 //
-//	cfg := zap.NewDevelopmentEncoderConfig()
+//	cfg := zapx.NewDevelopmentEncoderConfig()
 //	cfg.EncodeTime = zapcore.ISO8601TimeEncoder
 func NewDevelopmentEncoderConfig() zapcore.EncoderConfig {
 	return zapcore.EncoderConfig{

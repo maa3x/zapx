@@ -2,6 +2,7 @@ package zapx
 
 import (
 	"context"
+
 	"github.com/maa3x/zapx/zapcore"
 )
 

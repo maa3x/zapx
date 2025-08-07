@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-// package zapxfield provides experimental zap.Field helpers whose APIs may be unstable.
+// package zapxfield provides experimental zapx.Field helpers whose APIs may be unstable.
 package zapxfield
 
 import (
@@ -27,8 +27,8 @@ import (
 )
 
 // Str constructs a field with the given string-like key and value.
-func Str[K ~string, V ~string](k K, v V) zap.Field {
-	return zap.String(string(k), string(v))
+func Str[K, V ~string](k K, v V) zapx.Field {
+	return zapx.String(string(k), string(v))
 }
 
 type stringArray[T ~string] []T
@@ -41,6 +41,6 @@ func (a stringArray[T]) MarshalLogArray(enc zapcore.ArrayEncoder) error {
 }
 
 // Strs constructs a field that carries a slice of string-like values.
-func Strs[K ~string, V ~[]S, S ~string](k K, v V) zap.Field {
-	return zap.Array(string(k), stringArray[S](v))
+func Strs[K ~string, V ~[]S, S ~string](k K, v V) zapx.Field {
+	return zapx.Array(string(k), stringArray[S](v))
 }

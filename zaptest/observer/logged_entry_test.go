@@ -43,8 +43,8 @@ func TestLoggedEntryContextMap(t *testing.T) {
 		{
 			msg: "simple",
 			fields: []zapcore.Field{
-				zap.String("k1", "v"),
-				zap.Int64("k2", 10),
+				zapx.String("k1", "v"),
+				zapx.Int64("k2", 10),
 			},
 			want: map[string]interface{}{
 				"k1": "v",
@@ -54,8 +54,8 @@ func TestLoggedEntryContextMap(t *testing.T) {
 		{
 			msg: "overwrite",
 			fields: []zapcore.Field{
-				zap.String("k1", "v1"),
-				zap.String("k1", "v2"),
+				zapx.String("k1", "v1"),
+				zapx.String("k1", "v2"),
 			},
 			want: map[string]interface{}{
 				"k1": "v2",
@@ -64,9 +64,9 @@ func TestLoggedEntryContextMap(t *testing.T) {
 		{
 			msg: "nested",
 			fields: []zapcore.Field{
-				zap.String("k1", "v1"),
-				zap.Namespace("nested"),
-				zap.String("k2", "v2"),
+				zapx.String("k1", "v1"),
+				zapx.Namespace("nested"),
+				zapx.String("k2", "v2"),
 			},
 			want: map[string]interface{}{
 				"k1": "v1",

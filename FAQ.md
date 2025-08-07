@@ -135,11 +135,11 @@ w := zapcore.AddSync(&lumberjack.Logger{
   MaxAge:     28, // days
 })
 core := zapcore.NewCore(
-  zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig()),
+  zapcore.NewJSONEncoder(zapx.NewProductionEncoderConfig()),
   w,
-  zap.InfoLevel,
+  zapx.InfoLevel,
 )
-logger := zap.New(core)
+logger := zapx.New(core)
 ```
 
 ## Extensions

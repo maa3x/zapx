@@ -86,7 +86,7 @@ func withWarn() Option {
 }
 
 // NewLogger returns a new Logger.
-func NewLogger(l *zap.Logger, options ...Option) *Logger {
+func NewLogger(l *zapx.Logger, options ...Option) *Logger {
 	logger := &Logger{
 		delegate:     l.Sugar(),
 		levelEnabler: l.Core(),
@@ -136,7 +136,7 @@ func (v *printer) Println(args ...interface{}) {
 
 // Logger adapts zap's Logger to be compatible with grpclog.LoggerV2 and the deprecated grpclog.Logger.
 type Logger struct {
-	delegate     *zap.SugaredLogger
+	delegate     *zapx.SugaredLogger
 	levelEnabler zapcore.LevelEnabler
 	print        *printer
 	fatal        *printer

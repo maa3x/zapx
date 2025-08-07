@@ -24,9 +24,9 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/maa3x/zapx"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/maa3x/zapx"
 
 	//revive:disable:dot-imports
 	. "github.com/maa3x/zapx/zapcore"
@@ -56,7 +56,7 @@ func TestIncreaseLevel(t *testing.T) {
 		{
 			coreLevel:     InfoLevel,
 			increaseLevel: ErrorLevel,
-			with:          []Field{zap.String("k", "v")},
+			with:          []Field{zapx.String("k", "v")},
 		},
 		{
 			coreLevel:     ErrorLevel,

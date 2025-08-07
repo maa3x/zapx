@@ -24,9 +24,9 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/maa3x/zapx/zapcore"
 	"github.com/maa3x/zapx/zaptest/observer"
+	"github.com/stretchr/testify/assert"
 )
 
 type proxyCore struct {

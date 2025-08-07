@@ -50,20 +50,20 @@ func TestAtomicLevelServeHTTP(t *testing.T) {
 			desc:          "GET",
 			method:        http.MethodGet,
 			expectedCode:  http.StatusOK,
-			expectedLevel: zap.InfoLevel,
+			expectedLevel: zapx.InfoLevel,
 		},
 		{
 			desc:          "PUT JSON",
 			method:        http.MethodPut,
 			expectedCode:  http.StatusOK,
-			expectedLevel: zap.WarnLevel,
+			expectedLevel: zapx.WarnLevel,
 			body:          `{"level":"warn"}`,
 		},
 		{
 			desc:          "PUT URL encoded",
 			method:        http.MethodPut,
 			expectedCode:  http.StatusOK,
-			expectedLevel: zap.WarnLevel,
+			expectedLevel: zapx.WarnLevel,
 			contentType:   "application/x-www-form-urlencoded",
 			body:          "level=warn",
 		},
@@ -72,7 +72,7 @@ func TestAtomicLevelServeHTTP(t *testing.T) {
 			method:        http.MethodPut,
 			query:         "?level=warn",
 			expectedCode:  http.StatusOK,
-			expectedLevel: zap.WarnLevel,
+			expectedLevel: zapx.WarnLevel,
 			contentType:   "application/x-www-form-urlencoded",
 		},
 		{
@@ -80,7 +80,7 @@ func TestAtomicLevelServeHTTP(t *testing.T) {
 			method:        http.MethodPut,
 			query:         "?level=info",
 			expectedCode:  http.StatusOK,
-			expectedLevel: zap.WarnLevel,
+			expectedLevel: zapx.WarnLevel,
 			contentType:   "application/x-www-form-urlencoded",
 			body:          "level=warn",
 		},
@@ -89,7 +89,7 @@ func TestAtomicLevelServeHTTP(t *testing.T) {
 			method:        http.MethodPut,
 			query:         "?level=info",
 			expectedCode:  http.StatusOK,
-			expectedLevel: zap.WarnLevel,
+			expectedLevel: zapx.WarnLevel,
 			body:          `{"level":"warn"}`,
 		},
 		{
@@ -155,7 +155,7 @@ func TestAtomicLevelServeHTTP(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.desc, func(t *testing.T) {
-			lvl := zap.NewAtomicLevel()
+			lvl := zapx.NewAtomicLevel()
 			lvl.SetLevel(zapcore.InfoLevel)
 
 			server := httptest.NewServer(lvl)
@@ -196,7 +196,7 @@ func TestAtomicLevelServeHTTP(t *testing.T) {
 func TestAtomicLevelServeHTTPBrokenWriter(t *testing.T) {
 	t.Parallel()
 
-	lvl := zap.NewAtomicLevel()
+	lvl := zapx.NewAtomicLevel()
 
 	request, err := http.NewRequest(http.MethodGet, "http://localhost:1234/log/level", nil)
 	require.NoError(t, err, "Error constructing request.")
@@ -218,7 +218,7 @@ func (w *brokenHTTPResponseWriter) Write([]byte) (int, error) {
 }
 
 func TestAtomicLevelServeHTTPBadLevel(t *testing.T) {
-	srv := httptest.NewServer(zap.NewAtomicLevel())
+	srv := httptest.NewServer(zapx.NewAtomicLevel())
 	defer srv.Close()
 
 	req, err := http.NewRequest(http.MethodPut, srv.URL, strings.NewReader(`{"level":"<script>alert(\"malicious\")</script>"}`))
@@ -243,7 +243,7 @@ func FuzzAtomicLevelServeHTTP(f *testing.F) {
 	f.Add(`{"level":"warn"}`)
 	f.Add(`{"level":"<script>alert(\"malicious\")</script>"}`)
 	f.Fuzz(func(t *testing.T, input string) {
-		lvl := zap.NewAtomicLevel()
+		lvl := zapx.NewAtomicLevel()
 
 		resw := httptest.NewRecorder()
 		req, err := http.NewRequest(http.MethodPut, "http://localhost:9999/log/level", strings.NewReader(input))

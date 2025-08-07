@@ -39,7 +39,7 @@ func (p Password) LogValue() slog.Value {
 }
 
 func Example_slog() {
-	logger := zap.NewExample(zap.IncreaseLevel(zap.InfoLevel))
+	logger := zapx.NewExample(zapx.IncreaseLevel(zapx.InfoLevel))
 	defer logger.Sync()
 
 	sl := slog.New(zapslog.NewHandler(logger.Core()))

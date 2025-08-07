@@ -42,7 +42,7 @@
 // accept strongly typed fields - see the SugaredLogger.With documentation for
 // details.)
 //
-//	sugar := zap.NewExample().Sugar()
+//	sugar := zapx.NewExample().Sugar()
 //	defer sugar.Sync()
 //	sugar.Infow("failed to fetch URL",
 //	  "url", "http://example.com",
@@ -59,19 +59,19 @@
 // use the Logger. It's even faster than the SugaredLogger and allocates far
 // less, but it only supports strongly-typed, structured logging.
 //
-//	logger := zap.NewExample()
+//	logger := zapx.NewExample()
 //	defer logger.Sync()
 //	logger.Info("failed to fetch URL",
-//	  zap.String("url", "http://example.com"),
-//	  zap.Int("attempt", 3),
-//	  zap.Duration("backoff", time.Second),
+//	  zapx.String("url", "http://example.com"),
+//	  zapx.Int("attempt", 3),
+//	  zapx.Duration("backoff", time.Second),
 //	)
 //
 // Choosing between the Logger and SugaredLogger doesn't need to be an
 // application-wide decision: converting between the two is simple and
 // inexpensive.
 //
-//	logger := zap.NewExample()
+//	logger := zapx.NewExample()
 //	defer logger.Sync()
 //	sugar := logger.Sugar()
 //	plain := sugar.Desugar()
@@ -82,7 +82,7 @@
 // NewExample, NewProduction, and NewDevelopment. These presets build a logger
 // with a single function call:
 //
-//	logger, err := zap.NewProduction()
+//	logger, err := zapx.NewProduction()
 //	if err != nil {
 //	  log.Fatalf("can't initialize zap logger: %v", err)
 //	}

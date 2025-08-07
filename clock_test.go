@@ -24,9 +24,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/maa3x/zapx/zaptest/observer"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/maa3x/zapx/zaptest/observer"
 )
 
 type constantClock time.Time

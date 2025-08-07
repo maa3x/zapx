@@ -38,6 +38,6 @@ Breaking changes:
 ## 0.1.0 - 1 Aug 2023
 
 Initial release of github.com/maa3x/zapx/exp.
-This submodule contains experimental features for Zap.
+This submodule contains experimental features for zapx.
 Features incubated here may be promoted to the root Zap module,
 but it's not guaranteed.

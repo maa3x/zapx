@@ -26,9 +26,9 @@ import (
 	"sync/atomic"
 	"testing"
 
+	"github.com/maa3x/zapx/zapcore"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/maa3x/zapx/zapcore"
 )
 
 func TestConfig(t *testing.T) {

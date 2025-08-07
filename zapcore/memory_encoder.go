@@ -96,7 +96,7 @@ func (m *MapObjectEncoder) AddInt16(k string, v int16) { m.cur[k] = v }
 func (m *MapObjectEncoder) AddInt8(k string, v int8) { m.cur[k] = v }
 
 // AddString implements ObjectEncoder.
-func (m *MapObjectEncoder) AddString(k string, v string) { m.cur[k] = v }
+func (m *MapObjectEncoder) AddString(k, v string) { m.cur[k] = v }
 
 // AddTime implements ObjectEncoder.
 func (m MapObjectEncoder) AddTime(k string, v time.Time) { m.cur[k] = v }

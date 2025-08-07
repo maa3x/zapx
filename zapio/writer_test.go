@@ -18,17 +18,17 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package zapxio
+package zapio
 
 import (
 	"io"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	"github.com/maa3x/zapx"
 	"github.com/maa3x/zapx/zapcore"
 	"github.com/maa3x/zapx/zaptest/observer"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestWriter(t *testing.T) {
@@ -48,14 +48,14 @@ func TestWriter(t *testing.T) {
 				"baz\n",
 			},
 			want: []zapcore.Entry{
-				{Level: zap.InfoLevel, Message: "foo"},
-				{Level: zap.InfoLevel, Message: "bar"},
-				{Level: zap.InfoLevel, Message: "baz"},
+				{Level: zapx.InfoLevel, Message: "foo"},
+				{Level: zapx.InfoLevel, Message: "bar"},
+				{Level: zapx.InfoLevel, Message: "baz"},
 			},
 		},
 		{
 			desc:  "level too low",
-			level: zap.DebugLevel,
+			level: zapx.DebugLevel,
 			writes: []string{
 				"foo\n",
 				"bar\n",
@@ -64,31 +64,31 @@ func TestWriter(t *testing.T) {
 		},
 		{
 			desc:  "multiple newlines in a message",
-			level: zap.WarnLevel,
+			level: zapx.WarnLevel,
 			writes: []string{
 				"foo\nbar\n",
 				"baz\n",
 				"qux\nquux\n",
 			},
 			want: []zapcore.Entry{
-				{Level: zap.WarnLevel, Message: "foo"},
-				{Level: zap.WarnLevel, Message: "bar"},
-				{Level: zap.WarnLevel, Message: "baz"},
-				{Level: zap.WarnLevel, Message: "qux"},
-				{Level: zap.WarnLevel, Message: "quux"},
+				{Level: zapx.WarnLevel, Message: "foo"},
+				{Level: zapx.WarnLevel, Message: "bar"},
+				{Level: zapx.WarnLevel, Message: "baz"},
+				{Level: zapx.WarnLevel, Message: "qux"},
+				{Level: zapx.WarnLevel, Message: "quux"},
 			},
 		},
 		{
 			desc:  "message split across multiple writes",
-			level: zap.ErrorLevel,
+			level: zapx.ErrorLevel,
 			writes: []string{
 				"foo",
 				"bar\nbaz",
 				"qux",
 			},
 			want: []zapcore.Entry{
-				{Level: zap.ErrorLevel, Message: "foobar"},
-				{Level: zap.ErrorLevel, Message: "bazqux"},
+				{Level: zapx.ErrorLevel, Message: "foobar"},
+				{Level: zapx.ErrorLevel, Message: "bazqux"},
 			},
 		},
 		{
@@ -97,10 +97,10 @@ func TestWriter(t *testing.T) {
 				"foo\n\nbar\nbaz",
 			},
 			want: []zapcore.Entry{
-				{Level: zap.InfoLevel, Message: "foo"},
-				{Level: zap.InfoLevel, Message: ""},
-				{Level: zap.InfoLevel, Message: "bar"},
-				{Level: zap.InfoLevel, Message: "baz"},
+				{Level: zapx.InfoLevel, Message: "foo"},
+				{Level: zapx.InfoLevel, Message: ""},
+				{Level: zapx.InfoLevel, Message: "bar"},
+				{Level: zapx.InfoLevel, Message: "baz"},
 			},
 		},
 		{
@@ -109,9 +109,9 @@ func TestWriter(t *testing.T) {
 				"foo\nbar\nbaz\n",
 			},
 			want: []zapcore.Entry{
-				{Level: zap.InfoLevel, Message: "foo"},
-				{Level: zap.InfoLevel, Message: "bar"},
-				{Level: zap.InfoLevel, Message: "baz"},
+				{Level: zapx.InfoLevel, Message: "foo"},
+				{Level: zapx.InfoLevel, Message: "bar"},
+				{Level: zapx.InfoLevel, Message: "baz"},
 			},
 		},
 		{
@@ -120,10 +120,10 @@ func TestWriter(t *testing.T) {
 				"foo\nbar\nbaz\n\n",
 			},
 			want: []zapcore.Entry{
-				{Level: zap.InfoLevel, Message: "foo"},
-				{Level: zap.InfoLevel, Message: "bar"},
-				{Level: zap.InfoLevel, Message: "baz"},
-				{Level: zap.InfoLevel, Message: ""},
+				{Level: zapx.InfoLevel, Message: "foo"},
+				{Level: zapx.InfoLevel, Message: "bar"},
+				{Level: zapx.InfoLevel, Message: "baz"},
+				{Level: zapx.InfoLevel, Message: ""},
 			},
 		},
 	}
@@ -133,10 +133,10 @@ func TestWriter(t *testing.T) {
 		t.Run(tt.desc, func(t *testing.T) {
 			t.Parallel()
 
-			core, observed := observer.New(zap.InfoLevel)
+			core, observed := observer.New(zapx.InfoLevel)
 
 			w := Writer{
-				Log:   zap.New(core),
+				Log:   zapx.New(core),
 				Level: tt.level,
 			}
 
@@ -160,11 +160,11 @@ func TestWriter(t *testing.T) {
 func TestWrite_Sync(t *testing.T) {
 	t.Parallel()
 
-	core, observed := observer.New(zap.InfoLevel)
+	core, observed := observer.New(zapx.InfoLevel)
 
 	w := Writer{
-		Log:   zap.New(core),
-		Level: zap.InfoLevel,
+		Log:   zapx.New(core),
+		Level: zapx.InfoLevel,
 	}
 
 	io.WriteString(&w, "foo")
@@ -213,7 +213,7 @@ func BenchmarkWriter(b *testing.B) {
 	}
 
 	writer := Writer{
-		Log:   zap.New(new(partiallyNopCore)),
+		Log:   zapx.New(new(partiallyNopCore)),
 		Level: zapcore.DebugLevel,
 	}
 

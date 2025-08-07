@@ -25,10 +25,10 @@ import (
 	"fmt"
 	"time"
 
-	"go.uber.org/multierr"
 	"github.com/maa3x/zapx"
 	"github.com/maa3x/zapx/internal/ztest"
 	"github.com/maa3x/zapx/zapcore"
+	"go.uber.org/multierr"
 )
 
 var (
@@ -103,40 +103,40 @@ func (u *user) MarshalLogObject(enc zapcore.ObjectEncoder) error {
 	return nil
 }
 
-func newZapLogger(lvl zapcore.Level) *zap.Logger {
-	ec := zap.NewProductionEncoderConfig()
+func newZapLogger(lvl zapcore.Level) *zapx.Logger {
+	ec := zapx.NewProductionEncoderConfig()
 	ec.EncodeDuration = zapcore.NanosDurationEncoder
 	ec.EncodeTime = zapcore.EpochNanosTimeEncoder
 	enc := zapcore.NewJSONEncoder(ec)
-	return zap.New(zapcore.NewCore(
+	return zapx.New(zapcore.NewCore(
 		enc,
 		&ztest.Discarder{},
 		lvl,
 	))
 }
 
-func newSampledLogger(lvl zapcore.Level) *zap.Logger {
-	return zap.New(zapcore.NewSamplerWithOptions(
-		newZapLogger(zap.DebugLevel).Core(),
+func newSampledLogger(lvl zapcore.Level) *zapx.Logger {
+	return zapx.New(zapcore.NewSamplerWithOptions(
+		newZapLogger(zapx.DebugLevel).Core(),
 		100*time.Millisecond,
 		10, // first
 		10, // thereafter
 	))
 }
 
-func fakeFields() []zap.Field {
-	return []zap.Field{
-		zap.Int("int", _tenInts[0]),
-		zap.Ints("ints", _tenInts),
-		zap.String("string", _tenStrings[0]),
-		zap.Strings("strings", _tenStrings),
-		zap.Time("time", _tenTimes[0]),
-		zap.Times("times", _tenTimes),
-		zap.Object("user1", _oneUser),
-		zap.Object("user2", _oneUser),
-		zap.Object("user3", nil),
-		zap.Array("users", _tenUsers),
-		zap.Error(errExample),
+func fakeFields() []zapx.Field {
+	return []zapx.Field{
+		zapx.Int("int", _tenInts[0]),
+		zapx.Ints("ints", _tenInts),
+		zapx.String("string", _tenStrings[0]),
+		zapx.Strings("strings", _tenStrings),
+		zapx.Time("time", _tenTimes[0]),
+		zapx.Times("times", _tenTimes),
+		zapx.Object("user1", _oneUser),
+		zapx.Object("user2", _oneUser),
+		zapx.Object("user3", nil),
+		zapx.Array("users", _tenUsers),
+		zapx.Error(errExample),
 	}
 }
 

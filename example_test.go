@@ -34,7 +34,7 @@ import (
 func Example_presets() {
 	// Using zap's preset constructors is the simplest way to get a feel for the
 	// package, but they don't allow much customization.
-	logger := zap.NewExample() // or NewProduction, or NewDevelopment
+	logger := zapx.NewExample() // or NewProduction, or NewDevelopment
 	defer logger.Sync()
 
 	const url = "http://example.com"
@@ -55,9 +55,9 @@ func Example_presets() {
 	// structured logging.
 	logger.Info("Failed to fetch URL.",
 		// Structured context as strongly typed fields.
-		zap.String("url", url),
-		zap.Int("attempt", 3),
-		zap.Duration("backoff", time.Second),
+		zapx.String("url", url),
+		zapx.Int("attempt", 3),
+		zapx.Duration("backoff", time.Second),
 	)
 	// Output:
 	// {"level":"info","msg":"Failed to fetch URL.","url":"http://example.com","attempt":3,"backoff":"1s"}
@@ -87,11 +87,11 @@ func Example_basicConfiguration() {
 	  }
 	}`)
 
-	var cfg zap.Config
+	var cfg zapx.Config
 	if err := json.Unmarshal(rawJSON, &cfg); err != nil {
 		panic(err)
 	}
-	logger := zap.Must(cfg.Build())
+	logger := zapx.Must(cfg.Build())
 	defer logger.Sync()
 
 	logger.Info("logger construction succeeded")
@@ -110,10 +110,10 @@ func Example_advancedConfiguration() {
 	// high-priority logs.
 
 	// First, define our level-handling logic.
-	highPriority := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
+	highPriority := zapx.LevelEnablerFunc(func(lvl zapcore.Level) bool {
 		return lvl >= zapcore.ErrorLevel
 	})
-	lowPriority := zap.LevelEnablerFunc(func(lvl zapcore.Level) bool {
+	lowPriority := zapx.LevelEnablerFunc(func(lvl zapcore.Level) bool {
 		return lvl < zapcore.ErrorLevel
 	})
 
@@ -132,8 +132,8 @@ func Example_advancedConfiguration() {
 
 	// Optimize the Kafka output for machine consumption and the console output
 	// for human operators.
-	kafkaEncoder := zapcore.NewJSONEncoder(zap.NewProductionEncoderConfig())
-	consoleEncoder := zapcore.NewConsoleEncoder(zap.NewDevelopmentEncoderConfig())
+	kafkaEncoder := zapcore.NewJSONEncoder(zapx.NewProductionEncoderConfig())
+	consoleEncoder := zapcore.NewConsoleEncoder(zapx.NewDevelopmentEncoderConfig())
 
 	// Join the outputs, encoders, and level-handling functions into
 	// zapcore.Cores, then tee the four cores together.
@@ -145,18 +145,18 @@ func Example_advancedConfiguration() {
 	)
 
 	// From a zapcore.Core, it's easy to construct a Logger.
-	logger := zap.New(core)
+	logger := zapx.New(core)
 	defer logger.Sync()
 	logger.Info("constructed a logger")
 }
 
 func ExampleNamespace() {
-	logger := zap.NewExample()
+	logger := zapx.NewExample()
 	defer logger.Sync()
 
 	logger.With(
-		zap.Namespace("metrics"),
-		zap.Int("counter", 1),
+		zapx.Namespace("metrics"),
+		zapx.Int("counter", 1),
 	).Info("tracked some metrics")
 	// Output:
 	// {"level":"info","msg":"tracked some metrics","metrics":{"counter":1}}
@@ -181,12 +181,12 @@ func (a addr) MarshalLogObject(enc zapcore.ObjectEncoder) error {
 
 func (r *request) MarshalLogObject(enc zapcore.ObjectEncoder) error {
 	enc.AddString("url", r.URL)
-	zap.Inline(r.Listen).AddTo(enc)
+	zapx.Inline(r.Listen).AddTo(enc)
 	return enc.AddObject("remote", r.Remote)
 }
 
 func ExampleObject() {
-	logger := zap.NewExample()
+	logger := zapx.NewExample()
 	defer logger.Sync()
 
 	req := &request{
@@ -194,28 +194,28 @@ func ExampleObject() {
 		Listen: addr{"127.0.0.1", 8080},
 		Remote: addr{"127.0.0.1", 31200},
 	}
-	logger.Info("new request, in nested object", zap.Object("req", req))
-	logger.Info("new request, inline", zap.Inline(req))
+	logger.Info("new request, in nested object", zapx.Object("req", req))
+	logger.Info("new request, inline", zapx.Inline(req))
 	// Output:
 	// {"level":"info","msg":"new request, in nested object","req":{"url":"/test","ip":"127.0.0.1","port":8080,"remote":{"ip":"127.0.0.1","port":31200}}}
 	// {"level":"info","msg":"new request, inline","url":"/test","ip":"127.0.0.1","port":8080,"remote":{"ip":"127.0.0.1","port":31200}}
 }
 
 func ExampleNewStdLog() {
-	logger := zap.NewExample()
+	logger := zapx.NewExample()
 	defer logger.Sync()
 
-	std := zap.NewStdLog(logger)
+	std := zapx.NewStdLog(logger)
 	std.Print("standard logger wrapper")
 	// Output:
 	// {"level":"info","msg":"standard logger wrapper"}
 }
 
 func ExampleRedirectStdLog() {
-	logger := zap.NewExample()
+	logger := zapx.NewExample()
 	defer logger.Sync()
 
-	undo := zap.RedirectStdLog(logger)
+	undo := zapx.RedirectStdLog(logger)
 	defer undo()
 
 	log.Print("redirected standard library")
@@ -224,25 +224,25 @@ func ExampleRedirectStdLog() {
 }
 
 func ExampleReplaceGlobals() {
-	logger := zap.NewExample()
+	logger := zapx.NewExample()
 	defer logger.Sync()
 
-	undo := zap.ReplaceGlobals(logger)
+	undo := zapx.ReplaceGlobals(logger)
 	defer undo()
 
-	zap.L().Info("replaced zap's global loggers")
+	zapx.L().Info("replaced zap's global loggers")
 	// Output:
 	// {"level":"info","msg":"replaced zap's global loggers"}
 }
 
 func ExampleAtomicLevel() {
-	atom := zap.NewAtomicLevel()
+	atom := zapx.NewAtomicLevel()
 
 	// To keep the example deterministic, disable timestamps in the output.
-	encoderCfg := zap.NewProductionEncoderConfig()
+	encoderCfg := zapx.NewProductionEncoderConfig()
 	encoderCfg.TimeKey = ""
 
-	logger := zap.New(zapcore.NewCore(
+	logger := zapx.New(zapcore.NewCore(
 		zapcore.NewJSONEncoder(encoderCfg),
 		zapcore.Lock(os.Stdout),
 		atom,
@@ -251,14 +251,14 @@ func ExampleAtomicLevel() {
 
 	logger.Info("info logging enabled")
 
-	atom.SetLevel(zap.ErrorLevel)
+	atom.SetLevel(zapx.ErrorLevel)
 	logger.Info("info logging disabled")
 	// Output:
 	// {"level":"info","msg":"info logging enabled"}
 }
 
 func ExampleAtomicLevel_config() {
-	// The zap.Config struct includes an AtomicLevel. To use it, keep a
+	// The zapx.Config struct includes an AtomicLevel. To use it, keep a
 	// reference to the Config.
 	rawJSON := []byte(`{
 		"level": "info",
@@ -271,32 +271,32 @@ func ExampleAtomicLevel_config() {
 			"levelEncoder": "lowercase"
 		}
 	}`)
-	var cfg zap.Config
+	var cfg zapx.Config
 	if err := json.Unmarshal(rawJSON, &cfg); err != nil {
 		panic(err)
 	}
-	logger := zap.Must(cfg.Build())
+	logger := zapx.Must(cfg.Build())
 	defer logger.Sync()
 
 	logger.Info("info logging enabled")
 
-	cfg.Level.SetLevel(zap.ErrorLevel)
+	cfg.Level.SetLevel(zapx.ErrorLevel)
 	logger.Info("info logging disabled")
 	// Output:
 	// {"level":"info","message":"info logging enabled"}
 }
 
 func ExampleLogger_Check() {
-	logger := zap.NewExample()
+	logger := zapx.NewExample()
 	defer logger.Sync()
 
-	if ce := logger.Check(zap.DebugLevel, "debugging"); ce != nil {
+	if ce := logger.Check(zapx.DebugLevel, "debugging"); ce != nil {
 		// If debug-level log output isn't enabled or if zap's sampling would have
 		// dropped this log entry, we don't allocate the slice that holds these
 		// fields.
 		ce.Write(
-			zap.String("foo", "bar"),
-			zap.String("baz", "quux"),
+			zapx.String("foo", "bar"),
+			zapx.String("baz", "quux"),
 		)
 	}
 
@@ -305,7 +305,7 @@ func ExampleLogger_Check() {
 }
 
 func ExampleLogger_Named() {
-	logger := zap.NewExample()
+	logger := zapx.NewExample()
 	defer logger.Sync()
 
 	// By default, Loggers are unnamed.
@@ -326,11 +326,11 @@ func ExampleLogger_Named() {
 func ExampleWrapCore_replace() {
 	// Replacing a Logger's core can alter fundamental behaviors.
 	// For example, it can convert a Logger to a no-op.
-	nop := zap.WrapCore(func(zapcore.Core) zapcore.Core {
+	nop := zapx.WrapCore(func(zapcore.Core) zapcore.Core {
 		return zapcore.NewNopCore()
 	})
 
-	logger := zap.NewExample()
+	logger := zapx.NewExample()
 	defer logger.Sync()
 
 	logger.Info("working")
@@ -344,11 +344,11 @@ func ExampleWrapCore_replace() {
 func ExampleWrapCore_wrap() {
 	// Wrapping a Logger's core can extend its functionality. As a trivial
 	// example, it can double-write all logs.
-	doubled := zap.WrapCore(func(c zapcore.Core) zapcore.Core {
+	doubled := zapx.WrapCore(func(c zapcore.Core) zapcore.Core {
 		return zapcore.NewTee(c, c)
 	})
 
-	logger := zap.NewExample()
+	logger := zapx.NewExample()
 	defer logger.Sync()
 
 	logger.Info("single")
@@ -360,26 +360,26 @@ func ExampleWrapCore_wrap() {
 }
 
 func ExampleDict() {
-	logger := zap.NewExample()
+	logger := zapx.NewExample()
 	defer logger.Sync()
 
 	logger.Info("login event",
-		zap.Dict("event",
-			zap.Int("id", 123),
-			zap.String("name", "jane"),
-			zap.String("status", "pending")))
+		zapx.Dict("event",
+			zapx.Int("id", 123),
+			zapx.String("name", "jane"),
+			zapx.String("status", "pending")))
 	// Output:
 	// {"level":"info","msg":"login event","event":{"id":123,"name":"jane","status":"pending"}}
 }
 
 func ExampleObjects() {
-	logger := zap.NewExample()
+	logger := zapx.NewExample()
 	defer logger.Sync()
 
 	// Use the Objects field constructor when you have a list of objects,
 	// all of which implement zapcore.ObjectMarshaler.
 	logger.Debug("opening connections",
-		zap.Objects("addrs", []addr{
+		zapx.Objects("addrs", []addr{
 			{IP: "123.45.67.89", Port: 4040},
 			{IP: "127.0.0.1", Port: 4041},
 			{IP: "192.168.0.1", Port: 4042},
@@ -389,18 +389,18 @@ func ExampleObjects() {
 }
 
 func ExampleDictObject() {
-	logger := zap.NewExample()
+	logger := zapx.NewExample()
 	defer logger.Sync()
 
 	// Use DictObject to create zapcore.ObjectMarshaler implementations from Field arrays,
 	// then use the Object and Objects field constructors to turn them back into a Field.
 
 	logger.Debug("worker received job",
-		zap.Object("w1",
-			zap.DictObject(
-				zap.Int("id", 402000),
-				zap.String("description", "compress image data"),
-				zap.Int("priority", 3),
+		zapx.Object("w1",
+			zapx.DictObject(
+				zapx.Int("id", 402000),
+				zapx.String("description", "compress image data"),
+				zapx.Int("priority", 3),
 			),
 		))
 
@@ -409,22 +409,22 @@ func ExampleDictObject() {
 	d3 := 57 * time.Millisecond
 
 	logger.Info("worker status checks",
-		zap.Objects("job batch enqueued",
+		zapx.Objects("job batch enqueued",
 			[]zapcore.ObjectMarshaler{
-				zap.DictObject(
-					zap.String("worker", "w1"),
-					zap.Int("load", 419),
-					zap.Duration("latency", d1),
+				zapx.DictObject(
+					zapx.String("worker", "w1"),
+					zapx.Int("load", 419),
+					zapx.Duration("latency", d1),
 				),
-				zap.DictObject(
-					zap.String("worker", "w2"),
-					zap.Int("load", 520),
-					zap.Duration("latency", d2),
+				zapx.DictObject(
+					zapx.String("worker", "w2"),
+					zapx.Int("load", 520),
+					zapx.Duration("latency", d2),
 				),
-				zap.DictObject(
-					zap.String("worker", "w3"),
-					zap.Int("load", 310),
-					zap.Duration("latency", d3),
+				zapx.DictObject(
+					zapx.String("worker", "w3"),
+					zapx.Int("load", 310),
+					zapx.Duration("latency", d3),
 				),
 			},
 		))
@@ -434,14 +434,14 @@ func ExampleDictObject() {
 }
 
 func ExampleObjectValues() {
-	logger := zap.NewExample()
+	logger := zapx.NewExample()
 	defer logger.Sync()
 
 	// Use the ObjectValues field constructor when you have a list of
 	// objects that do not implement zapcore.ObjectMarshaler directly,
 	// but on their pointer receivers.
 	logger.Debug("starting tunnels",
-		zap.ObjectValues("addrs", []request{
+		zapx.ObjectValues("addrs", []request{
 			{
 				URL:    "/foo",
 				Listen: addr{"127.0.0.1", 8080},

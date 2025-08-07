@@ -37,7 +37,7 @@ import (
 
 var libraryNameToMarkdownName = map[string]string{
 	"Zap":                   ":zap: zap",
-	"Zap.Sugar":             ":zap: zap (sugared)",
+	"zapx.Sugar":             ":zap: zap (sugared)",
 	"stdlib.Println":        "standard library",
 	"sirupsen/logrus":       "logrus",
 	"go-kit/kit/log":        "go-kit",
@@ -128,7 +128,7 @@ func getBenchmarkRows(benchmarkName string) (string, error) {
 }
 
 func getBenchmarkRow(
-	input []string, benchmarkName string, libraryName string, baseline *benchmarkRow,
+	input []string, benchmarkName, libraryName string, baseline *benchmarkRow,
 ) (*benchmarkRow, error) {
 	line, err := findUniqueSubstring(input, fmt.Sprintf("%s/%s-", benchmarkName, libraryName))
 	if err != nil {

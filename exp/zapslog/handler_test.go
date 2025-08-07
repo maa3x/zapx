@@ -31,11 +31,11 @@ import (
 	"testing/slogtest"
 	"time"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	"github.com/maa3x/zapx/zapcore"
 	"github.com/maa3x/zapx/zaptest"
 	"github.com/maa3x/zapx/zaptest/observer"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func TestAddCaller(t *testing.T) {

@@ -26,8 +26,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/maa3x/zapx/internal/ztest"
+	"github.com/stretchr/testify/assert"
 
 	//revive:disable:dot-imports
 	. "github.com/maa3x/zapx/zapcore"

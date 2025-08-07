@@ -23,18 +23,18 @@ package grpc
 import (
 	"testing"
 
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	"github.com/maa3x/zapx"
 	"github.com/maa3x/zapx/zapcore"
 	"github.com/maa3x/zapx/zapgrpc"
 	"github.com/maa3x/zapx/zaptest/observer"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"google.golang.org/grpc/grpclog"
 )
 
 func TestLoggerV2(t *testing.T) {
 	core, observedLogs := observer.New(zapcore.InfoLevel)
-	zlog := zap.New(core)
+	zlog := zapx.New(core)
 
 	grpclog.SetLoggerV2(zapgrpc.NewLogger(zlog))
 

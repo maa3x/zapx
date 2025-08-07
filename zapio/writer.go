@@ -18,8 +18,8 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-// package zapxio provides tools for interacting with IO streams through Zap.
-package zapxio
+// package zapxio provides tools for interacting with IO streams through zapx.
+package zapio
 
 import (
 	"bytes"
@@ -37,7 +37,7 @@ import (
 // and you want to log the output using your existing logger configuration. For
 // example,
 //
-//	writer := &zapio.Writer{Log: logger, Level: zap.DebugLevel}
+//	writer := &zapio.Writer{Log: logger, Level: zapx.DebugLevel}
 //	defer writer.Close()
 //
 //	cmd := exec.CommandContext(ctx, ...)
@@ -52,7 +52,7 @@ type Writer struct {
 	// Log specifies the logger to which the Writer will write messages.
 	//
 	// The Writer will panic if Log is unspecified.
-	Log *zap.Logger
+	Log *zapx.Logger
 
 	// Log level for the messages written to the provided logger.
 	//

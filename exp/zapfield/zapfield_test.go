@@ -24,9 +24,9 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/maa3x/zapx"
 	"github.com/maa3x/zapx/zapcore"
+	"github.com/stretchr/testify/assert"
 )
 
 type (
@@ -47,11 +47,11 @@ func TestFieldConstructors(t *testing.T) {
 
 	tests := []struct {
 		name   string
-		expect zap.Field
-		field  zap.Field
+		expect zapx.Field
+		field  zapx.Field
 	}{
-		{"Str", zap.Field{Type: zapcore.StringType, Key: "test key", String: "test value"}, Str(key, value)},
-		{"Strs", zap.Array("test key", stringArray[MyValue]{"test value 1", "test value 2"}), Strs(key, values)},
+		{"Str", zapx.Field{Type: zapcore.StringType, Key: "test key", String: "test value"}, Str(key, value)},
+		{"Strs", zapx.Array("test key", stringArray[MyValue]{"test value 1", "test value 2"}), Strs(key, values)},
 	}
 
 	for _, tt := range tests {
@@ -62,7 +62,7 @@ func TestFieldConstructors(t *testing.T) {
 	}
 }
 
-func assertCanBeReused(t testing.TB, field zap.Field) {
+func assertCanBeReused(t testing.TB, field zapx.Field) {
 	var wg sync.WaitGroup
 
 	for i := 0; i < 100; i++ {

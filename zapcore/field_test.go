@@ -28,9 +28,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/maa3x/zapx"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"github.com/maa3x/zapx"
 
 	//revive:disable:dot-imports
 	. "github.com/maa3x/zapx/zapcore"
@@ -217,128 +217,128 @@ func TestEquals(t *testing.T) {
 		want bool
 	}{
 		{
-			a:    zap.Int16("a", 1),
-			b:    zap.Int32("a", 1),
+			a:    zapx.Int16("a", 1),
+			b:    zapx.Int32("a", 1),
 			want: false,
 		},
 		{
-			a:    zap.String("k", "a"),
-			b:    zap.String("k", "a"),
+			a:    zapx.String("k", "a"),
+			b:    zapx.String("k", "a"),
 			want: true,
 		},
 		{
-			a:    zap.String("k", "a"),
-			b:    zap.String("k2", "a"),
+			a:    zapx.String("k", "a"),
+			b:    zapx.String("k2", "a"),
 			want: false,
 		},
 		{
-			a:    zap.String("k", "a"),
-			b:    zap.String("k", "b"),
+			a:    zapx.String("k", "a"),
+			b:    zapx.String("k", "b"),
 			want: false,
 		},
 		{
-			a:    zap.Time("k", time.Unix(1000, 1000)),
-			b:    zap.Time("k", time.Unix(1000, 1000)),
+			a:    zapx.Time("k", time.Unix(1000, 1000)),
+			b:    zapx.Time("k", time.Unix(1000, 1000)),
 			want: true,
 		},
 		{
-			a:    zap.Time("k", time.Unix(1000, 1000).In(time.UTC)),
-			b:    zap.Time("k", time.Unix(1000, 1000).In(time.FixedZone("TEST", -8))),
+			a:    zapx.Time("k", time.Unix(1000, 1000).In(time.UTC)),
+			b:    zapx.Time("k", time.Unix(1000, 1000).In(time.FixedZone("TEST", -8))),
 			want: false,
 		},
 		{
-			a:    zap.Time("k", timeOutOfRangeLow),
-			b:    zap.Time("k", timeOutOfRangeLowNano),
+			a:    zapx.Time("k", timeOutOfRangeLow),
+			b:    zapx.Time("k", timeOutOfRangeLowNano),
 			want: false,
 		},
 		{
-			a:    zap.Time("k", timeOutOfRangeHigh),
-			b:    zap.Time("k", timeOutOfRangeHighNano),
+			a:    zapx.Time("k", timeOutOfRangeHigh),
+			b:    zapx.Time("k", timeOutOfRangeHighNano),
 			want: false,
 		},
 		{
-			a:    zap.Time("k", time.Unix(1000, 1000)),
-			b:    zap.Time("k", time.Unix(1000, 2000)),
+			a:    zapx.Time("k", time.Unix(1000, 1000)),
+			b:    zapx.Time("k", time.Unix(1000, 2000)),
 			want: false,
 		},
 		{
-			a:    zap.Binary("k", []byte{1, 2}),
-			b:    zap.Binary("k", []byte{1, 2}),
+			a:    zapx.Binary("k", []byte{1, 2}),
+			b:    zapx.Binary("k", []byte{1, 2}),
 			want: true,
 		},
 		{
-			a:    zap.Binary("k", []byte{1, 2}),
-			b:    zap.Binary("k", []byte{1, 3}),
+			a:    zapx.Binary("k", []byte{1, 2}),
+			b:    zapx.Binary("k", []byte{1, 3}),
 			want: false,
 		},
 		{
-			a:    zap.ByteString("k", []byte("abc")),
-			b:    zap.ByteString("k", []byte("abc")),
+			a:    zapx.ByteString("k", []byte("abc")),
+			b:    zapx.ByteString("k", []byte("abc")),
 			want: true,
 		},
 		{
-			a:    zap.ByteString("k", []byte("abc")),
-			b:    zap.ByteString("k", []byte("abd")),
+			a:    zapx.ByteString("k", []byte("abc")),
+			b:    zapx.ByteString("k", []byte("abd")),
 			want: false,
 		},
 		{
-			a:    zap.Ints("k", []int{1, 2}),
-			b:    zap.Ints("k", []int{1, 2}),
+			a:    zapx.Ints("k", []int{1, 2}),
+			b:    zapx.Ints("k", []int{1, 2}),
 			want: true,
 		},
 		{
-			a:    zap.Ints("k", []int{1, 2}),
-			b:    zap.Ints("k", []int{1, 3}),
+			a:    zapx.Ints("k", []int{1, 2}),
+			b:    zapx.Ints("k", []int{1, 3}),
 			want: false,
 		},
 		{
-			a:    zap.Object("k", users(10)),
-			b:    zap.Object("k", users(10)),
+			a:    zapx.Object("k", users(10)),
+			b:    zapx.Object("k", users(10)),
 			want: true,
 		},
 		{
-			a:    zap.Object("k", users(10)),
-			b:    zap.Object("k", users(20)),
+			a:    zapx.Object("k", users(10)),
+			b:    zapx.Object("k", users(20)),
 			want: false,
 		},
 		{
-			a:    zap.Any("k", map[string]string{"a": "b"}),
-			b:    zap.Any("k", map[string]string{"a": "b"}),
+			a:    zapx.Any("k", map[string]string{"a": "b"}),
+			b:    zapx.Any("k", map[string]string{"a": "b"}),
 			want: true,
 		},
 		{
-			a:    zap.Any("k", map[string]string{"a": "b"}),
-			b:    zap.Any("k", map[string]string{"a": "d"}),
+			a:    zapx.Any("k", map[string]string{"a": "b"}),
+			b:    zapx.Any("k", map[string]string{"a": "d"}),
 			want: false,
 		},
 		{
-			a:    zap.Dict("k", zap.String("a", "b")),
-			b:    zap.Dict("k", zap.String("a", "b")),
+			a:    zapx.Dict("k", zapx.String("a", "b")),
+			b:    zapx.Dict("k", zapx.String("a", "b")),
 			want: true,
 		},
 		{
-			a:    zap.Dict("k", zap.String("a", "b")),
-			b:    zap.Dict("k", zap.String("a", "d")),
+			a:    zapx.Dict("k", zapx.String("a", "b")),
+			b:    zapx.Dict("k", zapx.String("a", "d")),
 			want: false,
 		},
 		{
-			a:    zap.Object("k", zap.DictObject(zap.String("a", "b"))),
-			b:    zap.Object("k", zap.DictObject(zap.String("a", "b"))),
+			a:    zapx.Object("k", zapx.DictObject(zapx.String("a", "b"))),
+			b:    zapx.Object("k", zapx.DictObject(zapx.String("a", "b"))),
 			want: true,
 		},
 		{
-			a:    zap.Object("k", zap.DictObject(zap.String("a", "b"))),
-			b:    zap.Object("k", zap.DictObject(zap.String("a", "d"))),
+			a:    zapx.Object("k", zapx.DictObject(zapx.String("a", "b"))),
+			b:    zapx.Object("k", zapx.DictObject(zapx.String("a", "d"))),
 			want: false,
 		},
 		{
-			a:    zap.Object("k", nil),
-			b:    zap.Object("k", nil),
+			a:    zapx.Object("k", nil),
+			b:    zapx.Object("k", nil),
 			want: true,
 		},
 		{
-			a:    zap.Object("k", users(10)),
-			b:    zap.Object("k", nil),
+			a:    zapx.Object("k", users(10)),
+			b:    zapx.Object("k", nil),
 			want: false,
 		},
 	}

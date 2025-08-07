@@ -40,21 +40,21 @@ func assertEmpty(t testing.TB, logs *ObservedLogs) {
 }
 
 func TestObserver(t *testing.T) {
-	observer, logs := New(zap.InfoLevel)
+	observer, logs := New(zapx.InfoLevel)
 	assertEmpty(t, logs)
 
 	t.Run("LevelOf", func(t *testing.T) {
-		assert.Equal(t, zap.InfoLevel, zapcore.LevelOf(observer), "Observer reported the wrong log level.")
+		assert.Equal(t, zapx.InfoLevel, zapcore.LevelOf(observer), "Observer reported the wrong log level.")
 	})
 
 	assert.NoError(t, observer.Sync(), "Unexpected failure in no-op Sync")
 
-	obs := zap.New(observer).With(zap.Int("i", 1))
+	obs := zapx.New(observer).With(zapx.Int("i", 1))
 	obs.Info("foo")
 	obs.Debug("bar")
 	want := []LoggedEntry{{
-		Entry:   zapcore.Entry{Level: zap.InfoLevel, Message: "foo"},
-		Context: []zapcore.Field{zap.Int("i", 1)},
+		Entry:   zapcore.Entry{Level: zapx.InfoLevel, Message: "foo"},
+		Context: []zapcore.Field{zapx.Int("i", 1)},
 	}}
 
 	assert.Equal(t, 1, logs.Len(), "Unexpected observed logs Len.")
@@ -74,21 +74,21 @@ func TestObserver(t *testing.T) {
 }
 
 func TestObserverWith(t *testing.T) {
-	sf1, logs := New(zap.InfoLevel)
+	sf1, logs := New(zapx.InfoLevel)
 
 	// need to pad out enough initial fields so that the underlying slice cap()
 	// gets ahead of its len() so that the sf3/4 With append's could choose
 	// not to copy (if the implementation doesn't force them)
-	sf1 = sf1.With([]zapcore.Field{zap.Int("a", 1), zap.Int("b", 2)})
+	sf1 = sf1.With([]zapcore.Field{zapx.Int("a", 1), zapx.Int("b", 2)})
 
-	sf2 := sf1.With([]zapcore.Field{zap.Int("c", 3)})
-	sf3 := sf2.With([]zapcore.Field{zap.Int("d", 4)})
-	sf4 := sf2.With([]zapcore.Field{zap.Int("e", 5)})
-	ent := zapcore.Entry{Level: zap.InfoLevel, Message: "hello"}
+	sf2 := sf1.With([]zapcore.Field{zapx.Int("c", 3)})
+	sf3 := sf2.With([]zapcore.Field{zapx.Int("d", 4)})
+	sf4 := sf2.With([]zapcore.Field{zapx.Int("e", 5)})
+	ent := zapcore.Entry{Level: zapx.InfoLevel, Message: "hello"}
 
 	for i, core := range []zapcore.Core{sf2, sf3, sf4} {
 		if ce := core.Check(ent, nil); ce != nil {
-			ce.Write(zap.Int("i", i))
+			ce.Write(zapx.Int("i", i))
 		}
 	}
 
@@ -96,30 +96,30 @@ func TestObserverWith(t *testing.T) {
 		{
 			Entry: ent,
 			Context: []zapcore.Field{
-				zap.Int("a", 1),
-				zap.Int("b", 2),
-				zap.Int("c", 3),
-				zap.Int("i", 0),
+				zapx.Int("a", 1),
+				zapx.Int("b", 2),
+				zapx.Int("c", 3),
+				zapx.Int("i", 0),
 			},
 		},
 		{
 			Entry: ent,
 			Context: []zapcore.Field{
-				zap.Int("a", 1),
-				zap.Int("b", 2),
-				zap.Int("c", 3),
-				zap.Int("d", 4),
-				zap.Int("i", 1),
+				zapx.Int("a", 1),
+				zapx.Int("b", 2),
+				zapx.Int("c", 3),
+				zapx.Int("d", 4),
+				zapx.Int("i", 1),
 			},
 		},
 		{
 			Entry: ent,
 			Context: []zapcore.Field{
-				zap.Int("a", 1),
-				zap.Int("b", 2),
-				zap.Int("c", 3),
-				zap.Int("e", 5),
-				zap.Int("i", 2),
+				zapx.Int("a", 1),
+				zapx.Int("b", 2),
+				zapx.Int("c", 3),
+				zapx.Int("e", 5),
+				zapx.Int("i", 2),
 			},
 		},
 	}, logs.All(), "expected no field sharing between With siblings")
@@ -128,56 +128,56 @@ func TestObserverWith(t *testing.T) {
 func TestFilters(t *testing.T) {
 	logs := []LoggedEntry{
 		{
-			Entry:   zapcore.Entry{Level: zap.InfoLevel, Message: "log a"},
-			Context: []zapcore.Field{zap.String("fStr", "1"), zap.Int("a", 1)},
+			Entry:   zapcore.Entry{Level: zapx.InfoLevel, Message: "log a"},
+			Context: []zapcore.Field{zapx.String("fStr", "1"), zapx.Int("a", 1)},
 		},
 		{
-			Entry:   zapcore.Entry{Level: zap.InfoLevel, Message: "log a"},
-			Context: []zapcore.Field{zap.String("fStr", "2"), zap.Int("b", 2)},
+			Entry:   zapcore.Entry{Level: zapx.InfoLevel, Message: "log a"},
+			Context: []zapcore.Field{zapx.String("fStr", "2"), zapx.Int("b", 2)},
 		},
 		{
-			Entry:   zapcore.Entry{Level: zap.InfoLevel, Message: "log b"},
-			Context: []zapcore.Field{zap.Int("a", 1), zap.Int("b", 2)},
+			Entry:   zapcore.Entry{Level: zapx.InfoLevel, Message: "log b"},
+			Context: []zapcore.Field{zapx.Int("a", 1), zapx.Int("b", 2)},
 		},
 		{
-			Entry:   zapcore.Entry{Level: zap.InfoLevel, Message: "log c"},
-			Context: []zapcore.Field{zap.Int("a", 1), zap.Namespace("ns"), zap.Int("a", 2)},
+			Entry:   zapcore.Entry{Level: zapx.InfoLevel, Message: "log c"},
+			Context: []zapcore.Field{zapx.Int("a", 1), zapx.Namespace("ns"), zapx.Int("a", 2)},
 		},
 		{
-			Entry:   zapcore.Entry{Level: zap.InfoLevel, Message: "msg 1"},
-			Context: []zapcore.Field{zap.Int("a", 1), zap.Namespace("ns")},
+			Entry:   zapcore.Entry{Level: zapx.InfoLevel, Message: "msg 1"},
+			Context: []zapcore.Field{zapx.Int("a", 1), zapx.Namespace("ns")},
 		},
 		{
-			Entry:   zapcore.Entry{Level: zap.InfoLevel, Message: "any map"},
-			Context: []zapcore.Field{zap.Any("map", map[string]string{"a": "b"})},
+			Entry:   zapcore.Entry{Level: zapx.InfoLevel, Message: "any map"},
+			Context: []zapcore.Field{zapx.Any("map", map[string]string{"a": "b"})},
 		},
 		{
-			Entry:   zapcore.Entry{Level: zap.InfoLevel, Message: "any slice"},
-			Context: []zapcore.Field{zap.Any("slice", []string{"a"})},
+			Entry:   zapcore.Entry{Level: zapx.InfoLevel, Message: "any slice"},
+			Context: []zapcore.Field{zapx.Any("slice", []string{"a"})},
 		},
 		{
-			Entry:   zapcore.Entry{Level: zap.InfoLevel, Message: "msg 2"},
-			Context: []zapcore.Field{zap.Int("b", 2), zap.Namespace("filterMe")},
+			Entry:   zapcore.Entry{Level: zapx.InfoLevel, Message: "msg 2"},
+			Context: []zapcore.Field{zapx.Int("b", 2), zapx.Namespace("filterMe")},
 		},
 		{
-			Entry:   zapcore.Entry{Level: zap.InfoLevel, Message: "any slice"},
-			Context: []zapcore.Field{zap.Any("filterMe", []string{"b"})},
+			Entry:   zapcore.Entry{Level: zapx.InfoLevel, Message: "any slice"},
+			Context: []zapcore.Field{zapx.Any("filterMe", []string{"b"})},
 		},
 		{
-			Entry:   zapcore.Entry{Level: zap.WarnLevel, Message: "danger will robinson"},
-			Context: []zapcore.Field{zap.Int("b", 42)},
+			Entry:   zapcore.Entry{Level: zapx.WarnLevel, Message: "danger will robinson"},
+			Context: []zapcore.Field{zapx.Int("b", 42)},
 		},
 		{
-			Entry:   zapcore.Entry{Level: zap.ErrorLevel, Message: "warp core breach"},
-			Context: []zapcore.Field{zap.Int("b", 42)},
+			Entry:   zapcore.Entry{Level: zapx.ErrorLevel, Message: "warp core breach"},
+			Context: []zapcore.Field{zapx.Int("b", 42)},
 		},
 		{
-			Entry:   zapcore.Entry{Level: zap.ErrorLevel, Message: "msg", LoggerName: "my.logger"},
-			Context: []zapcore.Field{zap.Int("b", 42)},
+			Entry:   zapcore.Entry{Level: zapx.ErrorLevel, Message: "msg", LoggerName: "my.logger"},
+			Context: []zapcore.Field{zapx.Int("b", 42)},
 		},
 	}
 
-	logger, sink := New(zap.InfoLevel)
+	logger, sink := New(zapx.InfoLevel)
 	for _, log := range logs {
 		assert.NoError(t, logger.Write(log.Entry, log.Context), "Unexpected error writing log entry.")
 	}
@@ -194,17 +194,17 @@ func TestFilters(t *testing.T) {
 		},
 		{
 			msg:      "filter by field",
-			filtered: sink.FilterField(zap.String("fStr", "1")),
+			filtered: sink.FilterField(zapx.String("fStr", "1")),
 			want:     logs[0:1],
 		},
 		{
 			msg:      "filter by message and field",
-			filtered: sink.FilterMessage("log a").FilterField(zap.Int("b", 2)),
+			filtered: sink.FilterMessage("log a").FilterField(zapx.Int("b", 2)),
 			want:     logs[1:2],
 		},
 		{
 			msg:      "filter by field with duplicate fields",
-			filtered: sink.FilterField(zap.Int("a", 2)),
+			filtered: sink.FilterField(zapx.Int("a", 2)),
 			want:     logs[3:4],
 		},
 		{
@@ -219,17 +219,17 @@ func TestFilters(t *testing.T) {
 		},
 		{
 			msg:      "filter by snippet and field",
-			filtered: sink.FilterMessageSnippet("a").FilterField(zap.Int("b", 2)),
+			filtered: sink.FilterMessageSnippet("a").FilterField(zapx.Int("b", 2)),
 			want:     logs[1:2],
 		},
 		{
 			msg:      "filter for map",
-			filtered: sink.FilterField(zap.Any("map", map[string]string{"a": "b"})),
+			filtered: sink.FilterField(zapx.Any("map", map[string]string{"a": "b"})),
 			want:     logs[5:6],
 		},
 		{
 			msg:      "filter for slice",
-			filtered: sink.FilterField(zap.Any("slice", []string{"a"})),
+			filtered: sink.FilterField(zapx.Any("slice", []string{"a"})),
 			want:     logs[6:7],
 		},
 		{
@@ -252,7 +252,7 @@ func TestFilters(t *testing.T) {
 		},
 		{
 			msg:      "filter level",
-			filtered: sink.FilterLevelExact(zap.WarnLevel),
+			filtered: sink.FilterLevelExact(zapx.WarnLevel),
 			want:     logs[9:10],
 		},
 		{

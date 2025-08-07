@@ -220,7 +220,7 @@ func Int8p(key string, val *int8) Field {
 }
 
 // String constructs a field with the given key and value.
-func String(key string, val string) Field {
+func String(key, val string) Field {
 	return Field{Key: key, Type: zapcore.StringType, String: val}
 }
 
@@ -421,7 +421,7 @@ func Dict(key string, val ...Field) Field {
 	return dictField(key, val)
 }
 
-// We need a function with the signature (string, T) for zap.Any.
+// We need a function with the signature (string, T) for zapx.Any.
 func dictField(key string, val []Field) Field {
 	return Object(key, dictObject(val))
 }
@@ -442,11 +442,11 @@ func DictObject(val ...Field) zapcore.ObjectMarshaler {
 	return dictObject(val)
 }
 
-// We discovered an issue where zap.Any can cause a performance degradation
+// We discovered an issue where zapx.Any can cause a performance degradation
 // when used in new goroutines.
 //
-// This happens because the compiler assigns 4.8kb (one zap.Field per arm of
-// switch statement) of stack space for zap.Any when it takes the form:
+// This happens because the compiler assigns 4.8kb (one zapx.Field per arm of
+// switch statement) of stack space for zapx.Any when it takes the form:
 //
 //	switch v := v.(type) {
 //	case string:
@@ -628,8 +628,8 @@ func Any(key string, value interface{}) Field {
 // Context creates a field with the context.Context type.
 func Context(ctx context.Context) Field {
 	return zapcore.Field{
-		Key:    "context",
-		Type:   zapcore.ContextType,
+		Key:       "context",
+		Type:      zapcore.ContextType,
 		Interface: ctx,
 	}
 }

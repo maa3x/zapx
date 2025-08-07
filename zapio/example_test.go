@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package zapxio_test
+package zapio_test
 
 import (
 	"io"
@@ -29,7 +29,7 @@ import (
 )
 
 func ExampleWriter() {
-	logger := zap.NewExample()
+	logger := zapx.NewExample()
 	w := &zapio.Writer{Log: logger}
 
 	io.WriteString(w, "starting up\n")

@@ -142,7 +142,7 @@ func IncreaseLevel(lvl zapcore.LevelEnabler) Option {
 // For example, the following builds a logger that will exit the current
 // goroutine after writing a Panic/DPanic log message, but it will not start a panic.
 //
-//	zap.New(core, zap.WithPanicHook(zapcore.WriteThenGoexit))
+//	zapx.New(core, zapx.WithPanicHook(zapcore.WriteThenGoexit))
 //
 // This is useful for testing Panic/DPanic log output.
 func WithPanicHook(hook zapcore.CheckWriteHook) Option {
@@ -165,7 +165,7 @@ func OnFatal(action zapcore.CheckWriteAction) Option {
 // goroutine after writing a fatal log message, but it will not exit the
 // program.
 //
-//	zap.New(core, zap.WithFatalHook(zapcore.WriteThenGoexit))
+//	zapx.New(core, zapx.WithFatalHook(zapcore.WriteThenGoexit))
 //
 // It is important that the provided CheckWriteHook stops the control flow at
 // the current statement to meet expectations of callers of the logger.

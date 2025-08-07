@@ -34,7 +34,7 @@ type LoggerOption interface {
 
 type loggerOptions struct {
 	Level      zapcore.LevelEnabler
-	zapOptions []zap.Option
+	zapOptions []zapx.Option
 }
 
 type loggerOptionFunc func(*loggerOptions)
@@ -51,8 +51,8 @@ func Level(enab zapcore.LevelEnabler) LoggerOption {
 	})
 }
 
-// WrapOptions adds zap.Option's to a test Logger built by NewLogger.
-func WrapOptions(zapOpts ...zap.Option) LoggerOption {
+// WrapOptions adds zapx.Option's to a test Logger built by NewLogger.
+func WrapOptions(zapOpts ...zapx.Option) LoggerOption {
 	return loggerOptionFunc(func(opts *loggerOptions) {
 		opts.zapOptions = zapOpts
 	})
@@ -69,12 +69,12 @@ func WrapOptions(zapOpts ...zap.Option) LoggerOption {
 // The returned logger defaults to logging debug level messages and above.
 // This may be changed by passing a zaptest.Level during construction.
 //
-//	logger := zaptest.NewLogger(t, zaptest.Level(zap.WarnLevel))
+//	logger := zaptest.NewLogger(t, zaptest.Level(zapx.WarnLevel))
 //
-// You may also pass zap.Option's to customize test logger.
+// You may also pass zapx.Option's to customize test logger.
 //
-//	logger := zaptest.NewLogger(t, zaptest.WrapOptions(zap.AddCaller()))
-func NewLogger(t TestingT, opts ...LoggerOption) *zap.Logger {
+//	logger := zaptest.NewLogger(t, zaptest.WrapOptions(zapx.AddCaller()))
+func NewLogger(t TestingT, opts ...LoggerOption) *zapx.Logger {
 	cfg := loggerOptions{
 		Level: zapcore.DebugLevel,
 	}
@@ -83,16 +83,16 @@ func NewLogger(t TestingT, opts ...LoggerOption) *zap.Logger {
 	}
 
 	writer := NewTestingWriter(t)
-	zapOptions := []zap.Option{
+	zapOptions := []zapx.Option{
 		// Send zap errors to the same writer and mark the test as failed if
 		// that happens.
-		zap.ErrorOutput(writer.WithMarkFailed(true)),
+		zapx.ErrorOutput(writer.WithMarkFailed(true)),
 	}
 	zapOptions = append(zapOptions, cfg.zapOptions...)
 
-	return zap.New(
+	return zapx.New(
 		zapcore.NewCore(
-			zapcore.NewConsoleEncoder(zap.NewDevelopmentEncoderConfig()),
+			zapcore.NewConsoleEncoder(zapx.NewDevelopmentEncoderConfig()),
 			writer,
 			cfg.Level,
 		),
@@ -112,18 +112,18 @@ type TestingWriter struct {
 // NewTestingWriter builds a new TestingWriter that writes to the given
 // testing.TB.
 //
-// Use this if you need more flexibility when creating *zap.Logger
+// Use this if you need more flexibility when creating *zapx.Logger
 // than zaptest.NewLogger() provides.
 //
 // E.g., if you want to use custom core with zaptest.TestingWriter:
 //
 //	encoder := newCustomEncoder()
 //	writer := zaptest.NewTestingWriter(t)
-//	level := zap.NewAtomicLevelAt(zapcore.DebugLevel)
+//	level := zapx.NewAtomicLevelAt(zapcore.DebugLevel)
 //
 //	core := newCustomCore(encoder, writer, level)
 //
-//	logger := zap.New(core, zap.AddCaller())
+//	logger := zapx.New(core, zapx.AddCaller())
 func NewTestingWriter(t TestingT) TestingWriter {
 	return TestingWriter{t: t}
 }

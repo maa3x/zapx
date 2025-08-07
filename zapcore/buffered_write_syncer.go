@@ -56,7 +56,7 @@ const (
 //
 //	   // ...
 //	   core := zapcore.NewCore(enc, bws, lvl)
-//	   logger := zap.New(core)
+//	   logger := zapx.New(core)
 //
 //	   // ...
 //	}

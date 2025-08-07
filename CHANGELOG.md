@@ -40,7 +40,7 @@ Enhancements:
 * [#1246][]: Add `zap/exp/zapslog` package for integration with slog.
 * [#1273][]: Add `Name` to `Logger` which returns the Logger's name if one is set.
 * [#1281][]: Add `zap/exp/expfield` package which contains helper methods
-`Str` and `Strs` for constructing String-like zap.Fields.
+`Str` and `Strs` for constructing String-like zapx.Fields.
 * [#1310][]: Reduce stack size on `Any`.
 
 Thanks to @knight42, @dzakaammar, @bcspragu, and @rexywork for their contributions
@@ -56,7 +56,7 @@ to this release.
 Enhancements:
 * [#1148][]: Add `Level` to both `Logger` and `SugaredLogger` that reports the
   current minimum enabled log level.
-* [#1185][]: `SugaredLogger` turns errors to zap.Error automatically.
+* [#1185][]: `SugaredLogger` turns errors to zapx.Error automatically.
 
 Thanks to @Abirdcfly, @craigpastro, @nnnkkk7, and @sashamelentyev for their
 contributions to this release.
@@ -69,7 +69,7 @@ contributions to this release.
 Enhancements:
 * [#1147][]: Add a `zapcore.LevelOf` function to determine the level of a
   `LevelEnabler` or `Core`.
-* [#1155][]: Add `zap.Stringers` field constructor to log arrays of objects
+* [#1155][]: Add `zapx.Stringers` field constructor to log arrays of objects
   that implement `String() string`.
 
 [#1147]: https://github.com/uber-go/zap/pull/1147
@@ -78,17 +78,17 @@ Enhancements:
 ## 1.22.0 (8 Aug 2022)
 
 Enhancements:
-* [#1071][]: Add `zap.Objects` and `zap.ObjectValues` field constructors to log
+* [#1071][]: Add `zapx.Objects` and `zapx.ObjectValues` field constructors to log
   arrays of objects. With these two constructors, you don't need to implement
-  `zapcore.ArrayMarshaler` for use with `zap.Array` if those objects implement
+  `zapcore.ArrayMarshaler` for use with `zapx.Array` if those objects implement
   `zapcore.ObjectMarshaler`.
 * [#1079][]: Add `SugaredLogger.WithOptions` to build a copy of an existing
   `SugaredLogger` with the provided options applied.
 * [#1080][]: Add `*ln` variants to `SugaredLogger` for each log level.
   These functions provide a string joining behavior similar to `fmt.Println`.
-* [#1088][]: Add `zap.WithFatalHook` option to control the behavior of the
+* [#1088][]: Add `zapx.WithFatalHook` option to control the behavior of the
   logger for `Fatal`-level log entries. This defaults to exiting the program.
-* [#1108][]: Add a `zap.Must` function that you can use with `NewProduction` or
+* [#1108][]: Add a `zapx.Must` function that you can use with `NewProduction` or
   `NewDevelopment` to panic if the system was unable to build the logger.
 * [#1118][]: Add a `Logger.Log` method that allows specifying the log level for
   a statement dynamically.
@@ -107,7 +107,7 @@ for their contributions to this release.
 
 Enhancements:
 *  [#1047][]: Add `zapcore.ParseLevel` to parse a `Level` from a string.
-*  [#1048][]: Add `zap.ParseAtomicLevel` to parse an `AtomicLevel` from a
+*  [#1048][]: Add `zapx.ParseAtomicLevel` to parse an `AtomicLevel` from a
    string.
 
 Bugfixes:
@@ -175,7 +175,7 @@ Thanks to @lancoLiu and @thockin for their contributions to this release.
 ## 1.18.1 (28 Jun 2021)
 
 Bugfixes:
-* [#974][]: Fix nil dereference in logger constructed by `zap.NewNop`.
+* [#974][]: Fix nil dereference in logger constructed by `zapx.NewNop`.
 
 [#974]: https://github.com/uber-go/zap/pull/974
 
@@ -185,9 +185,9 @@ Enhancements:
 * [#961][]: Add `zapcore.BufferedWriteSyncer`, a new `WriteSyncer` that buffers
   messages in-memory and flushes them periodically.
 * [#971][]: Add `zapio.Writer` to use a Zap logger as an `io.Writer`.
-* [#897][]: Add `zap.WithClock` option to control the source of time via the
+* [#897][]: Add `zapx.WithClock` option to control the source of time via the
   new `zapcore.Clock` interface.
-* [#949][]: Avoid panicking in `zap.SugaredLogger` when arguments of `*w`
+* [#949][]: Avoid panicking in `zapx.SugaredLogger` when arguments of `*w`
   methods don't match expectations.
 * [#943][]: Add support for filtering by level or arbitrary matcher function to
   `zaptest/observer`.
@@ -217,7 +217,7 @@ Enhancements:
 * [#881][]: Support `grpclog.LoggerV2` in zapgrpc.
 * [#903][]: Support URL-encoded POST requests to the AtomicLevel HTTP handler
   with the `application/x-www-form-urlencoded` content type.
-* [#912][]: Support multi-field encoding with `zap.Inline`.
+* [#912][]: Support multi-field encoding with `zapx.Inline`.
 * [#913][]: Speed up SugaredLogger for calls with a single string.
 * [#928][]: Add support for filtering by field name to `zaptest/observer`.
 
@@ -353,7 +353,7 @@ Bugfixes:
 * [#706][]: Fix incorrect call depth to determine caller in Go 1.12.
 
 Enhancements:
-* [#610][]: Add `zaptest.WrapOptions` to wrap `zap.Option` for creating test
+* [#610][]: Add `zaptest.WrapOptions` to wrap `zapx.Option` for creating test
   loggers.
 * [#675][]: Don't panic when encoding a String field.
 * [#704][]: Disable HTML escaping for JSON objects encoded using the
@@ -473,7 +473,7 @@ Enhancements:
 * [#424][]: Add a `LineEnding` field to `EncoderConfig`, allowing users to
   override the Unix-style default.
 * [#425][]: Preserve time zones when logging times.
-* [#431][]: Make `zap.AtomicLevel` implement `fmt.Stringer`, which makes a
+* [#431][]: Make `zapx.AtomicLevel` implement `fmt.Stringer`, which makes a
   variety of operations a bit simpler.
 
 [#424]: https://github.com/uber-go/zap/pull/424
@@ -537,7 +537,7 @@ Breaking changes:
 * [#366][]: Add byte-oriented APIs to encoders to log UTF-8 encoded text without
   casting from `[]byte` to `string`.
 * [#364][]: To support buffering outputs, add `Sync` methods to `zapcore.Core`,
-  `zap.Logger`, and `zap.SugaredLogger`.
+  `zapx.Logger`, and `zapx.SugaredLogger`.
 * [#371][]: Rename the `testutils` package to `zaptest`, which is less likely to
   clash with other testing helpers.
 
@@ -592,7 +592,7 @@ breaking changes.
 
 Bugfixes:
 
-* [#339][]: Byte slices passed to `zap.Any` are now correctly treated as binary blobs
+* [#339][]: Byte slices passed to `zapx.Any` are now correctly treated as binary blobs
   rather than `[]uint8`.
 
 Enhancements:
@@ -624,8 +624,8 @@ Breaking changes:
   `S()` functions. Users can update their projects with
 
   ```
-  gofmt -r "zap.L -> zap.L()" -w .
-  gofmt -r "zap.S -> zap.S()" -w .
+  gofmt -r "zapx.L -> zapx.L()" -w .
+  gofmt -r "zapx.S -> zapx.S()" -w .
   ```
 * [#309][] and [#317][]: RC1 was mistakenly shipped with invalid
   JSON and YAML struct tags on all config structs. This release fixes the tags
@@ -641,8 +641,8 @@ Enhancements:
 * [#325][] and [#333][]: Zap now transparently supports non-standard, rich
   errors like those produced by `github.com/pkg/errors`.
 * [#326][]: Though `New(nil)` continues to return a no-op logger, `NewNop()` is
-  now preferred. Users can update their projects with `gofmt -r 'zap.New(nil) ->
-  zap.NewNop()' -w .`.
+  now preferred. Users can update their projects with `gofmt -r 'zapx.New(nil) ->
+  zapx.NewNop()' -w .`.
 * [#300][]: Incorrectly importing zap as `github.com/uber-go/zap` now returns a
   more informative error.
 

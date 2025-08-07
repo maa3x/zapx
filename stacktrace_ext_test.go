@@ -47,7 +47,7 @@ var _zapPackages = []string{
 }
 
 func TestStacktraceFiltersZapLog(t *testing.T) {
-	withLogger(t, func(logger *zap.Logger, out *bytes.Buffer) {
+	withLogger(t, func(logger *zapx.Logger, out *bytes.Buffer) {
 		logger.Error("test log")
 		logger.Sugar().Error("sugar test log")
 
@@ -57,13 +57,13 @@ func TestStacktraceFiltersZapLog(t *testing.T) {
 }
 
 func TestStacktraceFiltersZapMarshal(t *testing.T) {
-	withLogger(t, func(logger *zap.Logger, out *bytes.Buffer) {
+	withLogger(t, func(logger *zapx.Logger, out *bytes.Buffer) {
 		marshal := func(enc zapcore.ObjectEncoder) error {
 			logger.Warn("marshal caused warn")
 			enc.AddString("f", "v")
 			return nil
 		}
-		logger.Error("test log", zap.Object("obj", zapcore.ObjectMarshalerFunc(marshal)))
+		logger.Error("test log", zapx.Object("obj", zapcore.ObjectMarshalerFunc(marshal)))
 
 		logs := out.String()
 
@@ -120,7 +120,7 @@ func TestStacktraceFiltersVendorZap(t *testing.T) {
 }
 
 func TestStacktraceWithoutCallerSkip(t *testing.T) {
-	withLogger(t, func(logger *zap.Logger, out *bytes.Buffer) {
+	withLogger(t, func(logger *zapx.Logger, out *bytes.Buffer) {
 		func() {
 			logger.Error("test log")
 		}()
@@ -131,8 +131,8 @@ func TestStacktraceWithoutCallerSkip(t *testing.T) {
 }
 
 func TestStacktraceWithCallerSkip(t *testing.T) {
-	withLogger(t, func(logger *zap.Logger, out *bytes.Buffer) {
-		logger = logger.WithOptions(zap.AddCallerSkip(2))
+	withLogger(t, func(logger *zapx.Logger, out *bytes.Buffer) {
+		logger = logger.WithOptions(zapx.AddCallerSkip(2))
 		func() {
 			logger.Error("test log")
 		}()
@@ -145,11 +145,11 @@ func TestStacktraceWithCallerSkip(t *testing.T) {
 
 // withLogger sets up a logger with a real encoder set up, so that any marshal functions are called.
 // The inbuilt observer does not call Marshal for objects/arrays, which we need for some tests.
-func withLogger(t *testing.T, fn func(logger *zap.Logger, out *bytes.Buffer)) {
+func withLogger(t *testing.T, fn func(logger *zapx.Logger, out *bytes.Buffer)) {
 	buf := &bytes.Buffer{}
-	encoder := zapcore.NewConsoleEncoder(zap.NewDevelopmentEncoderConfig())
+	encoder := zapcore.NewConsoleEncoder(zapx.NewDevelopmentEncoderConfig())
 	core := zapcore.NewCore(encoder, zapcore.AddSync(buf), zapcore.DebugLevel)
-	logger := zap.New(core, zap.AddStacktrace(zap.DebugLevel))
+	logger := zapx.New(core, zapx.AddStacktrace(zapx.DebugLevel))
 	fn(logger, buf)
 }
 

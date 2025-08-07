@@ -26,10 +26,10 @@ import (
 	"strings"
 	"time"
 
-	"go.uber.org/multierr"
 	"github.com/maa3x/zapx/internal/bufferpool"
 	"github.com/maa3x/zapx/internal/exit"
 	"github.com/maa3x/zapx/internal/pool"
+	"go.uber.org/multierr"
 )
 
 var _cePool = pool.New(func() *CheckedEntry {
@@ -160,7 +160,7 @@ type Entry struct {
 //	}
 //
 // You can configure the hook for Fatal log statements at the logger level with
-// the zap.WithFatalHook option.
+// the zapx.WithFatalHook option.
 type CheckWriteHook interface {
 	// OnWrite is invoked with the CheckedEntry that was written and a list
 	// of fields added with that entry.

@@ -25,8 +25,8 @@ import (
 	"sync"
 	"testing"
 
-	"github.com/stretchr/testify/require"
 	"github.com/maa3x/zapx/internal/pool"
+	"github.com/stretchr/testify/require"
 )
 
 type pooledValue[T any] struct {

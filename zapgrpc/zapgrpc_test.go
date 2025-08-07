@@ -259,5 +259,5 @@ func withLogger(
 	f func(*Logger, *observer.ObservedLogs),
 ) {
 	core, observedLogs := observer.New(enab)
-	f(NewLogger(zap.New(core), append(opts, withWarn())...), observedLogs)
+	f(NewLogger(zapx.New(core), append(opts, withWarn())...), observedLogs)
 }
