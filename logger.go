@@ -26,6 +26,9 @@ import (
 	"os"
 	"strings"
 
+	otellog "go.opentelemetry.io/otel/log"
+	"go.opentelemetry.io/otel/log/global"
+
 	"github.com/maa3x/zapx/internal/bufferpool"
 	"github.com/maa3x/zapx/internal/stacktrace"
 	"github.com/maa3x/zapx/zapcore"
@@ -48,12 +51,14 @@ type Logger struct {
 
 	name        string
 	errorOutput zapcore.WriteSyncer
-
-	addStack zapcore.LevelEnabler
+	addStack    zapcore.LevelEnabler
 
 	callerSkip int
 
 	clock zapcore.Clock
+
+	otelLogger otellog.Logger
+	provider   otellog.LoggerProvider
 }
 
 // New constructs a new Logger from the provided zapcore.Core and Options. If
@@ -70,13 +75,15 @@ func New(core zapcore.Core, options ...Option) *Logger {
 	if core == nil {
 		return NewNop()
 	}
-	log := &Logger{
+	l := &Logger{
 		core:        core,
 		errorOutput: zapcore.Lock(os.Stderr),
 		addStack:    zapcore.FatalLevel + 1,
 		clock:       zapcore.DefaultClock,
+		provider:    global.GetLoggerProvider(),
 	}
-	return log.WithOptions(options...)
+	l.otelLogger = l.provider.Logger(l.Name())
+	return l.WithOptions(options...)
 }
 
 // NewNop returns a no-op Logger. It never writes out logs or internal errors,
@@ -228,6 +235,7 @@ func (log *Logger) Check(lvl zapcore.Level, msg string) *zapcore.CheckedEntry {
 // invocation of Log.
 func (log *Logger) Log(lvl zapcore.Level, msg string, fields ...Field) {
 	if ce := log.check(lvl, msg); ce != nil {
+		log.logOpenTelemetry(ce, fields...)
 		ce.Write(fields...)
 	}
 }
@@ -236,6 +244,7 @@ func (log *Logger) Log(lvl zapcore.Level, msg string, fields ...Field) {
 // at the log site, as well as any fields accumulated on the logger.
 func (log *Logger) Debug(msg string, fields ...Field) {
 	if ce := log.check(DebugLevel, msg); ce != nil {
+		log.logOpenTelemetry(ce, fields...)
 		ce.Write(fields...)
 	}
 }
@@ -244,6 +253,7 @@ func (log *Logger) Debug(msg string, fields ...Field) {
 // at the log site, as well as any fields accumulated on the logger.
 func (log *Logger) Info(msg string, fields ...Field) {
 	if ce := log.check(InfoLevel, msg); ce != nil {
+		log.logOpenTelemetry(ce, fields...)
 		ce.Write(fields...)
 	}
 }
@@ -252,6 +262,7 @@ func (log *Logger) Info(msg string, fields ...Field) {
 // at the log site, as well as any fields accumulated on the logger.
 func (log *Logger) Warn(msg string, fields ...Field) {
 	if ce := log.check(WarnLevel, msg); ce != nil {
+		log.logOpenTelemetry(ce, fields...)
 		ce.Write(fields...)
 	}
 }
@@ -260,6 +271,7 @@ func (log *Logger) Warn(msg string, fields ...Field) {
 // at the log site, as well as any fields accumulated on the logger.
 func (log *Logger) Error(msg string, fields ...Field) {
 	if ce := log.check(ErrorLevel, msg); ce != nil {
+		log.logOpenTelemetry(ce, fields...)
 		ce.Write(fields...)
 	}
 }
@@ -272,6 +284,7 @@ func (log *Logger) Error(msg string, fields ...Field) {
 // recoverable, but shouldn't ever happen.
 func (log *Logger) DPanic(msg string, fields ...Field) {
 	if ce := log.check(DPanicLevel, msg); ce != nil {
+		log.logOpenTelemetry(ce, fields...)
 		ce.Write(fields...)
 	}
 }
@@ -282,6 +295,7 @@ func (log *Logger) DPanic(msg string, fields ...Field) {
 // The logger then panics, even if logging at PanicLevel is disabled.
 func (log *Logger) Panic(msg string, fields ...Field) {
 	if ce := log.check(PanicLevel, msg); ce != nil {
+		log.logOpenTelemetry(ce, fields...)
 		ce.Write(fields...)
 	}
 }
@@ -293,6 +307,7 @@ func (log *Logger) Panic(msg string, fields ...Field) {
 // disabled.
 func (log *Logger) Fatal(msg string, fields ...Field) {
 	if ce := log.check(FatalLevel, msg); ce != nil {
+		log.logOpenTelemetry(ce, fields...)
 		ce.Write(fields...)
 	}
 }
