@@ -21,6 +21,7 @@
 package zapx
 
 import (
+	"context"
 	"fmt"
 	"math"
 	"time"
@@ -622,4 +623,13 @@ func Any(key string, value interface{}) Field {
 	}
 
 	return c.Any(key, value)
+}
+
+// Context creates a field with the context.Context type.
+func Context(ctx context.Context) Field {
+	return zapcore.Field{
+		Key:    "context",
+		Type:   zapcore.ContextType,
+		Interface: ctx,
+	}
 }
