@@ -27,9 +27,9 @@ import (
 	"time"
 
 	"go.uber.org/multierr"
-	"go.uber.org/zap/internal/bufferpool"
-	"go.uber.org/zap/internal/exit"
-	"go.uber.org/zap/internal/pool"
+	"github.com/maa3x/zapx/internal/bufferpool"
+	"github.com/maa3x/zapx/internal/exit"
+	"github.com/maa3x/zapx/internal/pool"
 )
 
 var _cePool = pool.New(func() *CheckedEntry {

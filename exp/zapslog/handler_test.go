@@ -20,7 +20,7 @@
 
 //go:build go1.21
 
-package zapslog
+package zapxslog
 
 import (
 	"bytes"
@@ -33,9 +33,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"go.uber.org/zap/zapcore"
-	"go.uber.org/zap/zaptest"
-	"go.uber.org/zap/zaptest/observer"
+	"github.com/maa3x/zapx/zapcore"
+	"github.com/maa3x/zapx/zaptest"
+	"github.com/maa3x/zapx/zaptest/observer"
 )
 
 func TestAddCaller(t *testing.T) {
@@ -64,7 +64,7 @@ func TestAddStack(t *testing.T) {
 	entry := logs.AllUntimed()[0]
 	require.Equal(t, "msg", entry.Message, "Unexpected message")
 	assert.Regexp(t,
-		`^go.uber.org/zap/exp/zapslog.TestAddStack`,
+		`^github.com/maa3x/zapx/exp/zapslog.TestAddStack`,
 		entry.Stack,
 		"Unexpected stack trace annotation.",
 	)

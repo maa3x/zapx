@@ -22,6 +22,7 @@ package zapcore
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"math"
 	"reflect"
@@ -96,6 +97,9 @@ const (
 	// InlineMarshalerType indicates that the field carries an ObjectMarshaler
 	// that should be inlined.
 	InlineMarshalerType
+
+	// ContextType indicates that the field carries a context.Context.
+	ContextType
 )
 
 // A Field is a marshaling operation used to add a key-value pair to a logger's
@@ -174,6 +178,11 @@ func (f Field) AddTo(enc ObjectEncoder) {
 		err = encodeStringer(f.Key, f.Interface, enc)
 	case ErrorType:
 		err = encodeError(f.Key, f.Interface.(error), enc)
+	case ContextType:
+		for _, ctxEnc := range contextEncoders {
+			_f := ctxEnc(f.Interface.(context.Context))
+			_f.AddTo(enc)
+		}
 	case SkipType:
 		break
 	default:

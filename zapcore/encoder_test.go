@@ -31,7 +31,7 @@ import (
 	"gopkg.in/yaml.v3"
 
 	//revive:disable:dot-imports
-	. "go.uber.org/zap/zapcore"
+	. "github.com/maa3x/zapx/zapcore"
 )
 
 var (
@@ -605,7 +605,7 @@ func TestTimeEncoders(t *testing.T) {
 
 	for _, tt := range tests {
 		cfg := EncoderConfig{}
-		require.NoError(t, yaml.Unmarshal([]byte(tt.yamlDoc), &cfg), "Unexpected error unmarshaling %q.", tt.yamlDoc)
+		require.NoError(t, yaml.Unmarshal([]byte(tt.yamlDoc), &cfg), "Unexpected error unmarshalling %q.", tt.yamlDoc)
 		require.NotNil(t, cfg.EncodeTime, "Unmashalled timeEncoder is nil for %q.", tt.yamlDoc)
 		assertAppended(
 			t,
@@ -623,7 +623,7 @@ func TestTimeEncodersWrongYAML(t *testing.T) {
 	}
 	for _, tt := range tests {
 		cfg := EncoderConfig{}
-		assert.Error(t, yaml.Unmarshal([]byte(tt), &cfg), "Expected unmarshaling %q to become error, but not.", tt)
+		assert.Error(t, yaml.Unmarshal([]byte(tt), &cfg), "Expected unmarshalling %q to become error, but not.", tt)
 	}
 }
 
@@ -639,7 +639,7 @@ func TestTimeEncodersParseFromJSON(t *testing.T) {
 
 	for _, tt := range tests {
 		cfg := EncoderConfig{}
-		require.NoError(t, json.Unmarshal([]byte(tt.jsonDoc), &cfg), "Unexpected error unmarshaling %q.", tt.jsonDoc)
+		require.NoError(t, json.Unmarshal([]byte(tt.jsonDoc), &cfg), "Unexpected error unmarshalling %q.", tt.jsonDoc)
 		require.NotNil(t, cfg.EncodeTime, "Unmashalled timeEncoder is nil for %q.", tt.jsonDoc)
 		assertAppended(
 			t,
@@ -665,7 +665,7 @@ func TestDurationEncoders(t *testing.T) {
 
 	for _, tt := range tests {
 		var de DurationEncoder
-		require.NoError(t, de.UnmarshalText([]byte(tt.name)), "Unexpected error unmarshaling %q.", tt.name)
+		require.NoError(t, de.UnmarshalText([]byte(tt.name)), "Unexpected error unmarshalling %q.", tt.name)
 		assertAppended(
 			t,
 			tt.expected,
@@ -689,7 +689,7 @@ func TestCallerEncoders(t *testing.T) {
 
 	for _, tt := range tests {
 		var ce CallerEncoder
-		require.NoError(t, ce.UnmarshalText([]byte(tt.name)), "Unexpected error unmarshaling %q.", tt.name)
+		require.NoError(t, ce.UnmarshalText([]byte(tt.name)), "Unexpected error unmarshalling %q.", tt.name)
 		assertAppended(
 			t,
 			tt.expected,
@@ -711,7 +711,7 @@ func TestNameEncoders(t *testing.T) {
 
 	for _, tt := range tests {
 		var ne NameEncoder
-		require.NoError(t, ne.UnmarshalText([]byte(tt.name)), "Unexpected error unmarshaling %q.", tt.name)
+		require.NoError(t, ne.UnmarshalText([]byte(tt.name)), "Unexpected error unmarshalling %q.", tt.name)
 		assertAppended(
 			t,
 			tt.expected,

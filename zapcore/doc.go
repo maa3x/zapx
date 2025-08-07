@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-// Package zapcore defines and implements the low-level interfaces upon which
+// package zapcore defines and implements the low-level interfaces upon which
 // zap is built. By providing alternate implementations of these interfaces,
 // external packages can extend zap's capabilities.
-package zapcore // import "go.uber.org/zap/zapcore"
+package zapcore // import "github.com/maa3x/zapx/zapcore"

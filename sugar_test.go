@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package zap
+package zapx
 
 import (
 	"errors"
@@ -26,10 +26,10 @@ import (
 	"strconv"
 	"testing"
 
-	"go.uber.org/zap/internal/exit"
-	"go.uber.org/zap/internal/ztest"
-	"go.uber.org/zap/zapcore"
-	"go.uber.org/zap/zaptest/observer"
+	"github.com/maa3x/zapx/internal/exit"
+	"github.com/maa3x/zapx/internal/ztest"
+	"github.com/maa3x/zapx/zapcore"
+	"github.com/maa3x/zapx/zaptest/observer"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

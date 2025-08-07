@@ -1,4 +1,4 @@
-package: go.uber.org/zap
+package: github.com/maa3x/zapx
 license: MIT
 import:
 - package: go.uber.org/atomic

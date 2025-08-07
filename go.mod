@@ -1,4 +1,4 @@
-module go.uber.org/zap
+module github.com/maa3x/zapx
 
 go 1.19
 

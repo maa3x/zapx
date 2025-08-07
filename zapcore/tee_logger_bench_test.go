@@ -23,9 +23,9 @@ package zapcore_test
 import (
 	"testing"
 
-	"go.uber.org/zap/internal/ztest"
+	"github.com/maa3x/zapx/internal/ztest"
 	//revive:disable:dot-imports
-	. "go.uber.org/zap/zapcore"
+	. "github.com/maa3x/zapx/zapcore"
 )
 
 func withBenchedTee(b *testing.B, f func(Core)) {

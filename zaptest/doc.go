@@ -18,5 +18,5 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-// Package zaptest provides a variety of helpers for testing log output.
-package zaptest // import "go.uber.org/zap/zaptest"
+// package zaptest provides a variety of helpers for testing log output.
+package zaptest // import "github.com/maa3x/zapx/zaptest"

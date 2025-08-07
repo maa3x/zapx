@@ -18,13 +18,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package zap
+package zapx
 
 import (
 	"fmt"
 	"time"
 
-	"go.uber.org/zap/zapcore"
+	"github.com/maa3x/zapx/zapcore"
 )
 
 // Array constructs a field with the given key and ArrayMarshaler. It provides

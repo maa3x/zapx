@@ -18,11 +18,11 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package zap
+package zapx
 
 import (
-	"go.uber.org/zap/internal/pool"
-	"go.uber.org/zap/zapcore"
+	"github.com/maa3x/zapx/internal/pool"
+	"github.com/maa3x/zapx/zapcore"
 )
 
 var _errArrayElemPool = pool.New(func() *errArrayElem {

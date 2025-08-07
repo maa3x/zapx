@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package zapio
+package zapxio
 
 import (
 	"io"
@@ -26,9 +26,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
-	"go.uber.org/zap/zaptest/observer"
+	"github.com/maa3x/zapx"
+	"github.com/maa3x/zapx/zapcore"
+	"github.com/maa3x/zapx/zaptest/observer"
 )
 
 func TestWriter(t *testing.T) {

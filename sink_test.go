@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package zap
+package zapx
 
 import (
 	"bytes"
@@ -30,7 +30,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"go.uber.org/zap/zapcore"
+	"github.com/maa3x/zapx/zapcore"
 )
 
 func stubSinkRegistry(t testing.TB) *sinkRegistry {

@@ -20,16 +20,16 @@
 
 //go:build go1.21
 
-package zapslog
+package zapxslog
 
 import (
 	"context"
 	"log/slog"
 	"runtime"
 
-	"go.uber.org/zap"
-	"go.uber.org/zap/internal/stacktrace"
-	"go.uber.org/zap/zapcore"
+	"github.com/maa3x/zapx"
+	"github.com/maa3x/zapx/internal/stacktrace"
+	"github.com/maa3x/zapx/zapcore"
 )
 
 // Handler implements the slog.Handler by writing to a zap Core.

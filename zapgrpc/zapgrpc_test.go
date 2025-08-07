@@ -18,15 +18,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package zapgrpc
+package zapio
 
 import (
 	"fmt"
 	"testing"
 
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
-	"go.uber.org/zap/zaptest/observer"
+	"github.com/maa3x/zapx"
+	"github.com/maa3x/zapx/zapcore"
+	"github.com/maa3x/zapx/zaptest/observer"
 
 	"github.com/stretchr/testify/require"
 )

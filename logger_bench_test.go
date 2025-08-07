@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package zap
+package zapx
 
 import (
 	"errors"
@@ -28,8 +28,8 @@ import (
 	"testing"
 	"time"
 
-	"go.uber.org/zap/internal/ztest"
-	"go.uber.org/zap/zapcore"
+	"github.com/maa3x/zapx/internal/ztest"
+	"github.com/maa3x/zapx/zapcore"
 )
 
 type user struct {
@@ -200,13 +200,13 @@ func BenchmarkAddCallerAndStacktrace(b *testing.B) {
 	})
 }
 
-func Benchmark5WithsUsed(b *testing.B) {
+func Benchmark5WithUsed(b *testing.B) {
 	benchmarkWithUsed(b, (*Logger).With, 5, true)
 }
 
 // This benchmark will be used in future as a
 // baseline for improving
-func Benchmark5WithsNotUsed(b *testing.B) {
+func Benchmark5WithNotUsed(b *testing.B) {
 	benchmarkWithUsed(b, (*Logger).With, 5, false)
 }
 

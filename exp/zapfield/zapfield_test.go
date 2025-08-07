@@ -18,15 +18,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package zapfield
+package zapxfield
 
 import (
 	"sync"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
+	"github.com/maa3x/zapx"
+	"github.com/maa3x/zapx/zapcore"
 )
 
 type (

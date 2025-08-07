@@ -18,14 +18,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package zap
+package zapx
 
 import (
 	"errors"
 	"sort"
 	"time"
 
-	"go.uber.org/zap/zapcore"
+	"github.com/maa3x/zapx/zapcore"
 )
 
 // SamplingConfig sets a sampling strategy for the logger. Sampling caps the

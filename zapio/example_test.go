@@ -18,14 +18,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package zapio_test
+package zapxio_test
 
 import (
 	"io"
 	"log"
 
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapio"
+	"github.com/maa3x/zapx"
+	"github.com/maa3x/zapx/zapio"
 )
 
 func ExampleWriter() {

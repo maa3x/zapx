@@ -18,12 +18,12 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-// Package zapfield provides experimental zap.Field helpers whose APIs may be unstable.
-package zapfield
+// package zapxfield provides experimental zap.Field helpers whose APIs may be unstable.
+package zapxfield
 
 import (
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
+	"github.com/maa3x/zapx"
+	"github.com/maa3x/zapx/zapcore"
 )
 
 // Str constructs a field with the given string-like key and value.

@@ -25,7 +25,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	//revive:disable:dot-imports
-	. "go.uber.org/zap/zapcore"
+	. "github.com/maa3x/zapx/zapcore"
 )
 
 var testEntry = Entry{

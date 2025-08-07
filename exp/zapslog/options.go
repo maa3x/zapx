@@ -20,7 +20,7 @@
 
 //go:build go1.21
 
-package zapslog
+package zapxslog
 
 import "log/slog"
 

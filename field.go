@@ -18,15 +18,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package zap
+package zapx
 
 import (
 	"fmt"
 	"math"
 	"time"
 
-	"go.uber.org/zap/internal/stacktrace"
-	"go.uber.org/zap/zapcore"
+	"github.com/maa3x/zapx/internal/stacktrace"
+	"github.com/maa3x/zapx/zapcore"
 )
 
 // Field is an alias for Field. Aliasing this type dramatically

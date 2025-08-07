@@ -18,14 +18,14 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-// Package zapgrpc provides a logger that is compatible with grpclog.
-package zapgrpc // import "go.uber.org/zap/zapgrpc"
+// package zapio provides a logger that is compatible with grpclog.
+package zapio // import "github.com/maa3x/zapx/zapgrpc"
 
 import (
 	"fmt"
 
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
+	"github.com/maa3x/zapx"
+	"github.com/maa3x/zapx/zapcore"
 )
 
 // See https://github.com/grpc/grpc-go/blob/v1.35.0/grpclog/loggerv2.go#L77-L86
@@ -37,7 +37,7 @@ const (
 )
 
 // _grpcToZapLevel maps gRPC log levels to zap log levels.
-// See https://pkg.go.dev/go.uber.org/zap@v1.16.0/zapcore#Level
+// See https://pkg.go.dev/github.com/maa3x/zapx@v1.16.0/zapcore#Level
 var _grpcToZapLevel = map[int]zapcore.Level{
 	grpcLvlInfo:  zapcore.InfoLevel,
 	grpcLvlWarn:  zapcore.WarnLevel,

@@ -18,15 +18,15 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-// Package zapio provides tools for interacting with IO streams through Zap.
-package zapio
+// package zapxio provides tools for interacting with IO streams through Zap.
+package zapxio
 
 import (
 	"bytes"
 	"io"
 
-	"go.uber.org/zap"
-	"go.uber.org/zap/zapcore"
+	"github.com/maa3x/zapx"
+	"github.com/maa3x/zapx/zapcore"
 )
 
 // Writer is an io.Writer that writes to the provided Zap logger, splitting log

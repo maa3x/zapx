@@ -20,7 +20,7 @@
 
 //go:build windows
 
-package zap
+package zapx
 
 import (
 	"os"

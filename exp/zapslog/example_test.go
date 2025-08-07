@@ -20,7 +20,7 @@
 
 //go:build go1.21
 
-package zapslog_test
+package zapxslog_test
 
 import (
 	"context"
@@ -28,8 +28,8 @@ import (
 	"net"
 	"time"
 
-	"go.uber.org/zap"
-	"go.uber.org/zap/exp/zapslog"
+	"github.com/maa3x/zapx"
+	"github.com/maa3x/zapx/exp/zapslog"
 )
 
 type Password string

@@ -18,13 +18,13 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package zap
+package zapx
 
 import (
 	"sync"
 	"testing"
 
-	"go.uber.org/zap/zapcore"
+	"github.com/maa3x/zapx/zapcore"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -117,14 +117,14 @@ func TestAtomicLevelText(t *testing.T) {
 
 	for _, tt := range tests {
 		var lvl AtomicLevel
-		// Test both initial unmarshaling and overwriting existing value.
+		// Test both initial unmarshalling and overwriting existing value.
 		for i := 0; i < 2; i++ {
 			if tt.err {
-				assert.Error(t, lvl.UnmarshalText([]byte(tt.text)), "Expected unmarshaling %q to fail.", tt.text)
+				assert.Error(t, lvl.UnmarshalText([]byte(tt.text)), "Expected unmarshalling %q to fail.", tt.text)
 			} else {
-				assert.NoError(t, lvl.UnmarshalText([]byte(tt.text)), "Expected unmarshaling %q to succeed.", tt.text)
+				assert.NoError(t, lvl.UnmarshalText([]byte(tt.text)), "Expected unmarshalling %q to succeed.", tt.text)
 			}
-			assert.Equal(t, tt.expect, lvl.Level(), "Unexpected level after unmarshaling.")
+			assert.Equal(t, tt.expect, lvl.Level(), "Unexpected level after unmarshalling.")
 			lvl.SetLevel(InfoLevel)
 		}
 

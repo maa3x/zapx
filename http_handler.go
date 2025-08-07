@@ -18,7 +18,7 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
 
-package zap
+package zapx
 
 import (
 	"encoding/json"
@@ -27,7 +27,7 @@ import (
 	"io"
 	"net/http"
 
-	"go.uber.org/zap/zapcore"
+	"github.com/maa3x/zapx/zapcore"
 )
 
 // ServeHTTP is a simple JSON endpoint that can report on or change the current
