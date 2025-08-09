@@ -633,3 +633,8 @@ func Context(ctx context.Context) Field {
 		Interface: ctx,
 	}
 }
+
+// Type constructs a field with the given key and the type of the value.
+func Type(key string, v any) Field {
+	return String(key, fmt.Sprintf("%T", v))
+}

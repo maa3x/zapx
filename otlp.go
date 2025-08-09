@@ -14,11 +14,27 @@ import (
 	"go.opentelemetry.io/otel/trace"
 )
 
+func init() {
+	RegisterContextEncoder(func(ctx context.Context) zapcore.Field {
+		if sc := trace.SpanContextFromContext(ctx); sc.HasTraceID() {
+			return String("trace_id", sc.TraceID().String())
+		}
+		return Skip()
+	})
+	RegisterContextEncoder(func(ctx context.Context) zapcore.Field {
+		if sc := trace.SpanContextFromContext(ctx); sc.HasSpanID() {
+			return String("span_id", sc.SpanID().String())
+		}
+		return Skip()
+	})
+}
+
 func (log *Logger) logOpenTelemetry(ce *zapcore.CheckedEntry, fields ...Field) {
 	var ctx context.Context
 	for _, field := range fields {
 		if field.Type == zapcore.ContextType {
 			ctx = field.Interface.(context.Context)
+			fields = append(fields, zapcore.FieldsFromContext(ctx)...)
 		}
 	}
 
@@ -35,7 +51,6 @@ func (log *Logger) logOpenTelemetry(ce *zapcore.CheckedEntry, fields ...Field) {
 	kvs := convertFields(fields)
 	if log.addStack.Enabled(ce.Level) && ce.Stack != "" {
 		kvs = append(kvs, otellog.String("exception.stacktrace", ce.Stack))
-
 	}
 	if log.addCaller {
 		if ce.Caller.Function != "" {

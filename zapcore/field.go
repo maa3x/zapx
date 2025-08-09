@@ -179,9 +179,8 @@ func (f Field) AddTo(enc ObjectEncoder) {
 	case ErrorType:
 		err = encodeError(f.Key, f.Interface.(error), enc)
 	case ContextType:
-		for _, ctxEnc := range contextEncoders {
-			_f := ctxEnc(f.Interface.(context.Context))
-			_f.AddTo(enc)
+		for _, f := range FieldsFromContext(f.Interface.(context.Context)) {
+			f.AddTo(enc)
 		}
 	case SkipType:
 		break
