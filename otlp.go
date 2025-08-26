@@ -151,14 +151,14 @@ func appendField(kvs []otellog.KeyValue, f zapcore.Field) []otellog.KeyValue {
 		return kvs
 
 	case zapcore.ArrayMarshalerType:
-		kv := otellog.String(f.Key+"_error", "otelzap: zapcore.ArrayMarshalerType is not implemented")
+		kv := otellog.String(f.Key+"_error", "zapcore.ArrayMarshalerType is not implemented")
 		return append(kvs, kv)
 	case zapcore.ObjectMarshalerType:
-		kv := otellog.String(f.Key+"_error", "otelzap: zapcore.ObjectMarshalerType is not implemented")
+		kv := otellog.String(f.Key+"_error", "zapcore.ObjectMarshalerType is not implemented")
 		return append(kvs, kv)
 
 	default:
-		kv := otellog.String(f.Key+"_error", fmt.Sprintf("otelzap: unknown field type: %v", f))
+		kv := otellog.String(f.Key+"_error", fmt.Sprintf("unknown field type: %v", f))
 		return append(kvs, kv)
 	}
 }
