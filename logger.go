@@ -21,6 +21,7 @@
 package zapx
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"os"
@@ -42,6 +43,7 @@ import (
 // safety over brevity. For most applications, the SugaredLogger strikes a
 // better balance between performance and ergonomics.
 type Logger struct {
+	ctx  context.Context
 	core zapcore.Core
 
 	development bool
