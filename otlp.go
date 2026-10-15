@@ -158,6 +158,12 @@ func appendField(kvs []attribute.KeyValue, f zapcore.Field) []attribute.KeyValue
 		kv := attribute.String(f.Key+"_error", "zapcore.ObjectMarshalerType is not implemented")
 		return append(kvs, kv)
 
+	case zapcore.ContextType:
+		for _, f := range zapcore.FieldsFromContext(f.Interface.(context.Context)) {
+			kvs = appendField(kvs, f)
+		}
+		return kvs
+
 	default:
 		kv := attribute.String(f.Key+"_error", fmt.Sprintf("unknown field type: %v", f))
 		return append(kvs, kv)
